@@ -328,13 +328,78 @@
         footer a:hover {
             text-decoration: underline;
         }
-.team-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    max-width: 900px;
-    margin: 0 auto;
-}
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        @media (max-width: 768px) {
+        /* Styles for tablets and mobile devices */
+        .hero {
+            background-attachment: scroll; /* Disable parallax on mobile for better performance */
+            padding: 80px 20px;
+        }
+    
+        .hero h1 {
+            font-size: 2.5rem; /* Reduce font size for smaller screens */
+        }
+    
+        .hero p {
+            font-size: 1.1rem;
+        }
+    
+        .section {
+            padding: 50px 0; /* Reduce section padding */
+        }
+    
+        .section h2 {
+            font-size: 2rem; /* Reduce heading size */
+        }
+    
+        .about-content {
+            flex-direction: column; /* Stack the text and image vertically */
+            gap: 30px;
+        }
+    
+        .about-image {
+            max-width: 100%; /* Make image full-width on mobile */
+        }
+    
+        .accordion-button {
+            font-size: 1.2rem; /* Reduce accordion button font size */
+            padding: 15px 20px;
+        }
+    
+        .accordion-content {
+            padding: 0 20px;
+        }
+    
+        .content-inner {
+            padding-bottom: 20px;
+        }
+    
+        .team-grid {
+            grid-template-columns: 1fr; /* Display team cards in a single column */
+        }
+    }
+    
+    @media (max-width: 480px) {
+        /* Further adjustments for smaller phones */
+        body {
+            font-size: 16px;
+        }
+    
+        .hero h1 {
+            font-size: 2rem;
+        }
+        
+        .cta-button {
+            font-size: 1rem;
+            padding: 12px 24px;
+        }
+    }
     </style>
 </head>
 <body>

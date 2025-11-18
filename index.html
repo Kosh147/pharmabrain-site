@@ -312,6 +312,23 @@
         .submit-button:hover {
             background-color: var(--primary-color);
         }
+        .form-message {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+        }
+        .form-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .form-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
 
         /* Footer */
         footer {
@@ -656,7 +673,10 @@
         Заполните форму — мы подготовим персональную демонстрацию платформы.</p>
     
         <div class="contact-form" style="max-width:700px; margin:0 auto;">
-          <form action="mailto:rk@pharmabrain.ru" method="POST" enctype="text/plain">
+          <form id="demo-form" action="https://formsubmit.co/rk@pharmabrain.ru" method="POST">
+            <input type="hidden" name="_subject" value="Новый запрос на демо-версию ФарМозга">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
             <div class="form-group">
               <label for="demo-name">Ваше имя</label>
               <input type="text" id="demo-name" name="name" required>
@@ -666,6 +686,10 @@
               <input type="email" id="demo-email" name="email" required>
             </div>
             <div class="form-group">
+              <label for="demo-phone">Телефон</label>
+              <input type="tel" id="demo-phone" name="phone" placeholder="+7 (XXX) XXX-XX-XX" required>
+            </div>
+            <div class="form-group">
               <label for="demo-company">Компания</label>
               <input type="text" id="demo-company" name="company">
             </div>
@@ -673,6 +697,7 @@
               <label for="demo-interest">Какие задачи вы хотите решить?</label>
               <textarea id="demo-interest" name="interest" placeholder="Например: аудит SOP, фармаконадзор, CTD-документы..." required></textarea>
             </div>
+            <div id="demo-form-message" style="display:none; padding:15px; margin-bottom:20px; border-radius:8px; text-align:center;"></div>
             <button type="submit" class="submit-button" style="width:100%;">Отправить запрос на демо</button>
           </form>
         </div>
@@ -926,7 +951,10 @@
             <h2>Свяжитесь с нами</h2>
             <p class="subtitle">Готовы к трансформации? Оставьте заявку, и мы покажем, как ФарМозг может помочь вашему бизнесу.</p>
             <div class="contact-form">
-                <form action="mailto:kalasheg@yandex.ru" method="POST" enctype="text/plain">
+                <form id="contact-form" action="https://formsubmit.co/kalasheg@yandex.ru" method="POST">
+                <input type="hidden" name="_subject" value="Новое сообщение с сайта ФарМозг">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
                 <div class="form-group">
                     <label for="name">Ваше имя</label>
                     <input type="text" id="name" name="name" required>
@@ -936,6 +964,10 @@
                     <input type="email" id="email" name="email" required>
                 </div>
                 <div class="form-group">
+                    <label for="phone">Телефон</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+7 (XXX) XXX-XX-XX" required>
+                </div>
+                <div class="form-group">
                     <label for="company">Компания</label>
                     <input type="text" id="company" name="company">
                 </div>
@@ -943,6 +975,7 @@
                     <label for="message">Ваше сообщение</label>
                     <textarea id="message" name="message" required></textarea>
                 </div>
+                <div id="contact-form-message" style="display:none; padding:15px; margin-bottom:20px; border-radius:8px; text-align:center;"></div>
                 <button type="submit" class="submit-button">Отправить заявку</button>
                 </form>
             </div>
@@ -986,6 +1019,88 @@
                 }
             });
         });
+
+        // Handle demo form submission
+        const demoForm = document.getElementById('demo-form');
+        const demoMessage = document.getElementById('demo-form-message');
+        
+        if (demoForm) {
+            demoForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(demoForm);
+                const submitButton = demoForm.querySelector('.submit-button');
+                const originalText = submitButton.textContent;
+                
+                submitButton.textContent = 'Отправка...';
+                submitButton.disabled = true;
+                demoMessage.style.display = 'none';
+
+                fetch(demoForm.action, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.ok) {
+                        demoMessage.textContent = 'Спасибо! Ваш запрос успешно отправлен. Мы свяжемся с вами в ближайшее время.';
+                        demoMessage.className = 'form-message success';
+                        demoMessage.style.display = 'block';
+                        demoForm.reset();
+                    } else {
+                        throw new Error('Ошибка отправки');
+                    }
+                })
+                .catch(error => {
+                    demoMessage.textContent = 'Произошла ошибка при отправке. Пожалуйста, попробуйте еще раз или свяжитесь с нами напрямую.';
+                    demoMessage.className = 'form-message error';
+                    demoMessage.style.display = 'block';
+                })
+                .finally(() => {
+                    submitButton.textContent = originalText;
+                    submitButton.disabled = false;
+                });
+            });
+        }
+
+        // Handle contact form submission
+        const contactForm = document.getElementById('contact-form');
+        const contactMessage = document.getElementById('contact-form-message');
+        
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(contactForm);
+                const submitButton = contactForm.querySelector('.submit-button');
+                const originalText = submitButton.textContent;
+                
+                submitButton.textContent = 'Отправка...';
+                submitButton.disabled = true;
+                contactMessage.style.display = 'none';
+
+                fetch(contactForm.action, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.ok) {
+                        contactMessage.textContent = 'Спасибо! Ваше сообщение успешно отправлено. Мы свяжемся с вами в ближайшее время.';
+                        contactMessage.className = 'form-message success';
+                        contactMessage.style.display = 'block';
+                        contactForm.reset();
+                    } else {
+                        throw new Error('Ошибка отправки');
+                    }
+                })
+                .catch(error => {
+                    contactMessage.textContent = 'Произошла ошибка при отправке. Пожалуйста, попробуйте еще раз или свяжитесь с нами напрямую.';
+                    contactMessage.className = 'form-message error';
+                    contactMessage.style.display = 'block';
+                })
+                .finally(() => {
+                    submitButton.textContent = originalText;
+                    submitButton.disabled = false;
+                });
+            });
+        }
     });
 </script>
 

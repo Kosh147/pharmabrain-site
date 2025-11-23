@@ -673,7 +673,7 @@
         Заполните форму — мы подготовим персональную демонстрацию платформы.</p>
     
         <div class="contact-form" style="max-width:700px; margin:0 auto;">
-          <form action="mailto:rk@pharmabrain.ru" method="POST" enctype="text/plain">
+          <form id="demoForm">
             <div class="form-group">
               <label for="demo-name">Ваше имя</label>
               <input type="text" id="demo-name" name="name" required>
@@ -947,7 +947,7 @@
             <h2>Свяжитесь с нами</h2>
             <p class="subtitle">Готовы к трансформации? Оставьте заявку, и мы покажем, как ФарМозг может помочь вашему бизнесу.</p>
             <div class="contact-form">
-                <form action="mailto:kalasheg@yandex.ru" method="POST" enctype="text/plain">
+                <form id="contactForm">
                 <div class="form-group">
                     <label for="name">Ваше имя</label>
                     <input type="text" id="name" name="name" required>
@@ -966,7 +966,7 @@
                 </div>
                 <div class="form-group">
                     <label for="message">Ваше сообщение</label>
-                    <textarea id="message" name="message" required></textarea>
+                    <textarea id="message" name="interest" required></textarea>
                 </div>
                 <button type="submit" class="submit-button">Отправить заявку</button>
                 </form>
@@ -1010,6 +1010,44 @@
                     content.style.maxHeight = null;
                 }
             });
+        });
+
+        // Обработчик формы демо
+        document.getElementById('demoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const response = await fetch('https://pharmabrain.ru/PharmAI/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    company: formData.get('company') || null,
+                    interest: formData.get('interest')
+                })
+            });
+            const result = await response.json();
+            alert(result.success ? result.message : result.error);
+        });
+
+        // Обработчик контактной формы
+        document.getElementById('contactForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const response = await fetch('https://pharmabrain.ru/PharmAI/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    company: formData.get('company') || null,
+                    interest: formData.get('interest')
+                })
+            });
+            const result = await response.json();
+            alert(result.success ? result.message : result.error);
         });
     });
 </script>

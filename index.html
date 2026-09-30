@@ -68,19 +68,37 @@
             padding: 10px 16px; border-radius: 999px;
         }
         .nav-tools { display: flex; align-items: center; gap: 10px; }
-        .lang-switch {
-            display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden;
+        .lang-select {
+            width: auto; padding: 7px 28px 7px 12px; border: 1px solid var(--line); border-radius: 999px;
+            font-weight: 800; font-size: 12px; color: var(--navy); background-color: #fff; cursor: pointer;
         }
-        .lang-switch button {
-            border: 0; background: transparent; padding: 7px 11px;
-            font-weight: 800; font-size: 12px; letter-spacing: .04em;
-            color: var(--muted); cursor: pointer;
-        }
-        .lang-switch button.active { background: var(--navy); color: #fff; }
         .menu-btn {
             display: none; background: none; border: 1px solid var(--line);
             border-radius: 10px; padding: 8px 10px; cursor: pointer;
         }
+
+        /* Scripts without Plus Jakarta Sans glyphs */
+        :lang(zh) body { font-family: "Plus Jakarta Sans", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif; }
+        :lang(ar) body { font-family: "Plus Jakarta Sans", "Geeza Pro", Tahoma, "Noto Sans Arabic", sans-serif; }
+        :lang(hi) body { font-family: "Plus Jakarta Sans", "Kohinoor Devanagari", Mangal, "Noto Sans Devanagari", sans-serif; }
+        html:lang(zh) h1, html:lang(zh) h2, html:lang(ar) h1, html:lang(ar) h2, html:lang(hi) h1, html:lang(hi) h2 { letter-spacing: 0; line-height: 1.3; }
+        html:lang(zh) .kicker, html:lang(ar) .kicker, html:lang(hi) .kicker { letter-spacing: .02em; }
+        html:lang(hi) h1, html:lang(hi) h2, html:lang(hi) h3 { line-height: 1.45; }
+
+        /* Right-to-left (Arabic) */
+        [dir="rtl"] .hero::before { background: linear-gradient(270deg, rgba(8,20,38,.92) 0%, rgba(8,20,38,.78) 48%, rgba(8,20,38,.45) 100%); }
+        [dir="rtl"] .nav-links { margin-left: 0; margin-right: auto; }
+        [dir="rtl"] .flow-steps li { padding: 10px 18px 10px 0; border-left: 0; border-right: 2px solid #cde8e3; }
+        [dir="rtl"] .flow-steps li:last-child { border-right-color: transparent; }
+        [dir="rtl"] .flow-steps li::before { left: auto; right: -5px; }
+        [dir="rtl"] .press-quote { border-left: 0; border-right: 4px solid var(--teal); }
+        [dir="rtl"] .appeal-faces img:first-child { left: auto; right: 0; }
+        [dir="rtl"] .appeal-faces img:last-child { left: auto; right: 40px; }
+        [dir="rtl"] .offer-tab { text-align: right; }
+        [dir="rtl"] .buy-aside ul { padding-left: 0; padding-right: 18px; }
+        [dir="rtl"] .modal-panel { right: auto; left: 0; }
+        [dir="rtl"] .modal-close { right: auto; left: 14px; }
+        [dir="rtl"] .lang-select { padding: 7px 12px 7px 28px; }
 
         /* Buttons */
         .btn {
@@ -137,6 +155,50 @@
         .kicker { color: var(--teal-2); font-weight: 800; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; margin: 0 0 10px; }
         h2 { font-size: clamp(1.7rem, 3vw, 2.4rem); letter-spacing: -0.03em; margin: 0 0 12px; line-height: 1.2; }
         .sub { color: var(--muted); font-size: 1.05rem; max-width: 720px; margin: 0; }
+
+        /* Why */
+        .why { background: #fff; }
+        .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 36px; }
+        .why-card { border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; background: var(--bg); }
+        .why-card h3 { margin: 0 0 8px; font-size: 1.05rem; color: var(--teal-2); }
+        .why-card p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+        .why-quote {
+            display: grid; grid-template-columns: 96px 1fr; gap: 22px; align-items: center;
+            margin: 36px 0 0; padding: 26px; border-radius: 20px; background: var(--navy); color: #fff;
+        }
+        .why-quote img { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; }
+        .why-quote blockquote { margin: 0 0 10px; font-size: 1.15rem; font-weight: 600; line-height: 1.5; }
+        .why-quote figcaption { color: #9ee8dc; font-size: 13px; font-weight: 700; }
+
+        /* Appeal (Wikipedia-style founders' letter) */
+        .appeal .container { width: min(920px, calc(100% - 40px)); }
+        .appeal-card {
+            display: grid; grid-template-columns: 180px 1fr; gap: 32px; align-items: start; background: #fffdf4; border: 1px solid #eadfb8;
+            border-radius: 20px; padding: 34px; box-shadow: var(--shadow);
+        }
+        .appeal-faces { position: relative; height: 230px; }
+        .appeal-faces img {
+            position: absolute; width: 140px; height: 140px; border-radius: 50%; object-fit: cover;
+            border: 5px solid #fffdf4; filter: grayscale(1) contrast(1.05);
+        }
+        .appeal-faces img:first-child { top: 0; left: 0; }
+        .appeal-faces img:last-child { top: 86px; left: 40px; }
+        .appeal-text h2 { font-size: clamp(1.35rem, 2.4vw, 1.8rem); }
+        .appeal-text p { margin: 0 0 14px; font-size: 1.05rem; }
+        .appeal-text mark { background: #fff0a0; padding: 0 3px; font-weight: 700; }
+        .appeal-sign { font-style: italic; color: var(--muted); }
+        .appeal-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+
+        /* Press */
+        .press { background: #fff; }
+        .press-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 36px; }
+        .press-stat { background: var(--teal); color: #fff; border-radius: 16px; padding: 18px; }
+        .press-stat strong { display: block; font-size: 2rem; letter-spacing: -0.03em; line-height: 1.1; }
+        .press-stat span { display: block; margin-top: 6px; font-size: 0.88rem; color: #e0f6f2; }
+        .press-quotes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; }
+        .press-quote { margin: 0; padding: 22px; background: var(--bg); border-radius: 16px; border-left: 4px solid var(--teal); }
+        .press-quote blockquote { margin: 0 0 10px; font-size: 0.98rem; font-weight: 600; }
+        .press-quote figcaption { color: var(--teal-2); font-size: 13px; font-weight: 700; }
 
         /* Principle */
         .principle { background: #fff; }
@@ -330,7 +392,7 @@
         .toast.err { display: block; background: #f8d7da; color: #721c24; }
 
         @media (max-width: 980px) {
-            .hero-grid, .buy-grid, .catalog-grid, .layer-grid, .adv-grid, .contact-grid, .flow-grid, .team-grid {
+            .hero-grid, .buy-grid, .catalog-grid, .layer-grid, .adv-grid, .contact-grid, .flow-grid, .team-grid, .why-grid, .press-quotes, .appeal-card {
                 grid-template-columns: 1fr;
             }
             .catalog-grid { grid-template-columns: 1fr 1fr; }
@@ -343,11 +405,16 @@
             .menu-btn { display: block; }
             .hero-grid { padding: 48px 0; }
             .offer-tabs { grid-template-columns: 1fr; }
+            .press-stats { grid-template-columns: 1fr 1fr; }
+            .appeal-faces { height: 150px; }
+            .appeal-faces img:last-child { top: 0; left: 110px; }
         }
         @media (max-width: 640px) {
             .catalog-grid { grid-template-columns: 1fr; }
             .container { width: min(1180px, calc(100% - 28px)); }
             section { padding: 64px 0; }
+            .why-quote { grid-template-columns: 1fr; }
+            .appeal-card { padding: 22px; }
         }
     </style>
 </head>
@@ -356,18 +423,22 @@
         <div class="container nav-inner">
             <a class="logo" href="#top"><img src="images/logo.png" alt="ФарМозг"></a>
             <nav class="nav-links" id="navLinks">
-                <a href="#catalog" data-offer="agents" data-i18n="nav_agents">Агенты</a>
-                <a href="#catalog" data-offer="systems" data-i18n="nav_systems">Системы</a>
-                <a href="#catalog" data-offer="courses" data-i18n="nav_courses">Курсы</a>
-                <a href="#buy" data-i18n="nav_buy">Как внедрять</a>
+                <a href="#why" data-i18n="nav_about">О нас</a>
+                <a href="#appeal" data-i18n="nav_appeal">Поддержать</a>
+                <a href="#press" data-i18n="nav_press">Пресса</a>
+                <a href="#catalog" data-offer="agents" data-i18n="nav_done">Что сделано</a>
                 <a href="#team" data-i18n="nav_team">Команда</a>
                 <a class="nav-cta" href="#contact" data-i18n="nav_demo">Запросить демо</a>
             </nav>
             <div class="nav-tools">
-                <div class="lang-switch" role="group" aria-label="Language" data-i18n-aria="lang">
-                    <button type="button" data-set-lang="ru" class="active">RU</button>
-                    <button type="button" data-set-lang="en">EN</button>
-                </div>
+                <select class="lang-select" id="langSelect" aria-label="Language" data-i18n-aria="lang">
+                    <option value="ru">RU · Русский</option>
+                    <option value="en">EN · English</option>
+                    <option value="zh">中文</option>
+                    <option value="ar">العربية</option>
+                    <option value="tr">TR · Türkçe</option>
+                    <option value="hi">हिन्दी</option>
+                </select>
                 <button class="menu-btn" id="menuBtn" data-i18n-aria="menu" aria-label="Меню">☰</button>
             </div>
         </div>
@@ -376,24 +447,108 @@
     <section class="hero" id="top">
         <div class="container hero-grid">
             <div>
-                <div class="eyebrow" data-i18n="hero_eyebrow">Очередь внедрения · GxP</div>
-                <h1 data-i18n="hero_h1">Пилот с готовых агентов. Затем AI-first системы</h1>
-                <p class="hero-lead" data-i18n="hero_lead">Обычный порядок внедрения: начать с агентов, которые уже работают, — поиск по базе знаний, CTD, сравнение документов, аудиты, фармаконадзор. Когда сценарий подтверждён, разворачивать AI-first систему с ИИ внутри рабочих форм Deviation, Sample, CRF и Document. Параллельно команда проходит учебную траекторию по цифровой трансформации и ИИ в GxP.</p>
+                <div class="eyebrow" data-i18n="hero_eyebrow">ФарМозг · ИИ-стартап для фармы</div>
+                <h1 data-i18n="hero_h1">ИИ, который разбирает фармдокументы и анализирует процессы</h1>
+                <p class="hero-lead" data-i18n="hero_lead">Сотни файлов, несколько языков, требования разных регуляторов и дедлайн подачи досье. ИИ берёт на себя механическую работу — сортировку, проверку, сравнение, перевод, — а решения остаются за специалистом.</p>
                 <div class="hero-actions">
-                    <a class="btn btn-primary" href="#catalog" data-offer="agents" data-i18n="hero_cta_catalog">Готовые агенты</a>
-                    <a class="btn btn-ghost" href="#catalog" data-offer="systems" data-i18n="hero_cta_systems">AI-first системы</a>
-                    <a class="btn btn-ghost" href="#catalog" data-offer="courses" data-i18n="hero_cta_courses">Учебные курсы</a>
+                    <a class="btn btn-primary" href="#why" data-i18n="hero_cta_about">Кто мы и зачем</a>
+                    <a class="btn btn-ghost" href="#catalog" data-offer="agents" data-i18n="hero_cta_catalog">Что уже сделали</a>
+                    <a class="btn btn-ghost" href="#appeal" data-i18n="hero_cta_appeal">Поддержать проект</a>
                 </div>
                 <div class="hero-meta">
-                    <span data-i18n="hero_meta1">21 готовый агент</span>
-                    <span data-i18n="hero_meta2">30 систем в линейке</span>
-                    <span data-i18n="hero_meta3">16 курсов по ЦТ и ИИ</span>
+                    <span data-i18n="hero_meta1">85% точность автоклассификации CTD</span>
+                    <span data-i18n="hero_meta2">21 готовый агент</span>
+                    <span data-i18n="hero_meta3">2 основателя + команда ИИ-агентов</span>
                 </div>
             </div>
             <div class="hero-shot">
                 <div class="shot-wrap">
                     <img src="images/agents/home.png" data-i18n-alt="hero_shot_alt" alt="Каталог готовых AI-агентов PharmAI">
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="why" id="why">
+        <div class="container">
+            <p class="kicker" data-i18n="why_kicker">01 · Кто мы и зачем</p>
+            <h2 data-i18n="why_h2">Мы — ФарМозг: два эксперта фармы и ИТ и команда ИИ-агентов</h2>
+            <p class="sub" data-i18n="why_sub">Компания зарегистрирована в ноябре 2025 года. Мы делаем ИИ, который понимает регуляторные и GxP-процессы, — а не ещё один чат с LLM.</p>
+            <div class="why-grid">
+                <article class="why-card">
+                    <h3 data-i18n="why1_h">Проблема</h3>
+                    <p data-i18n="why1_p">Регистрационное досье — это сотни документов в разных форматах и на разных языках. Специалисты тратят часы, чтобы просмотреть их, разложить по разделам CTD и сверить с требованиями.</p>
+                </article>
+                <article class="why-card">
+                    <h3 data-i18n="why2_h">Что мы делаем</h3>
+                    <p data-i18n="why2_p">ИИ загружает документы, извлекает метаданные, классифицирует по разделам CTD, проверяет комплектность и соответствие требованиям, сравнивает версии и переводит. Часы ручной работы превращаются в минуты.</p>
+                </article>
+                <article class="why-card">
+                    <h3 data-i18n="why3_h">Зачем это нужно</h3>
+                    <p data-i18n="why3_p">Не заменить специалиста, а освободить его от механики. Человек проверяет и подтверждает результат: в фарме цена ошибки слишком высока, чтобы отдавать решения модели.</p>
+                </article>
+            </div>
+            <figure class="why-quote">
+                <img src="1743798159307.jpeg" data-i18n-alt="team2_name" alt="Константин Кошечкин">
+                <div>
+                    <blockquote data-i18n="why_quote">«Мы не заменяем специалиста по регуляторным вопросам — мы освобождаем его от перетаскивания файла из папки А в папку Б. Если процесс можно автоматизировать, рано или поздно кто-нибудь обязательно автоматизирует его в Excel. Мы же предлагаем сделать это чуть умнее».</blockquote>
+                    <figcaption data-i18n="why_quote_by">Константин Кошечкин, сооснователь ФарМозга — «Фармацевтический вестник», сентябрь 2026</figcaption>
+                </div>
+            </figure>
+        </div>
+    </section>
+
+    <section class="appeal" id="appeal">
+        <div class="container">
+            <p class="kicker" data-i18n="appeal_kicker">02 · Личное обращение</p>
+            <article class="appeal-card">
+                <div class="appeal-faces">
+                    <img src="1517584992362.jpeg" data-i18n-alt="team1_name" alt="Руслан Калашников">
+                    <img src="1743798159307.jpeg" data-i18n-alt="team2_name" alt="Константин Кошечкин">
+                </div>
+                <div class="appeal-text">
+                    <h2 data-i18n="appeal_h2">Пожалуйста, прочтите: личное обращение основателей ФарМозга</h2>
+                    <p data-i18n="appeal_p1">Мы — Руслан и Константин, и в штате ФарМозга нас всего двое. Основную разработку и тестирование ведут ИИ-агенты, а инфраструктура обходится примерно в 10 тысяч рублей в месяц. Мы развиваемся на собственные средства и уже сделали 21 рабочего агента — от CTD-генератора до фармаконадзора.</p>
+                    <p data-i18n-html="appeal_p2"><mark>Но чтобы ИИ стал обычным рабочим инструментом фармы, нужны те, кто готов попробовать первым.</mark></p>
+                    <p data-i18n="appeal_p3">Если вы отвечаете за регуляторику, качество или фармаконадзор, возьмите пилот на одном процессе. Если вы инвестор и считаете, что ИИ в фарме — это инфраструктура, а не хайп, давайте поговорим. Для начала хватит одной встречи.</p>
+                    <p class="appeal-sign" data-i18n="appeal_sign">Руслан Калашников и Константин Кошечкин, основатели ФарМозга</p>
+                    <div class="appeal-actions">
+                        <a class="btn btn-teal" href="#contact" data-i18n="appeal_cta_pilot">Стать пилотным заказчиком</a>
+                        <a class="btn btn-line" href="#contact" data-i18n="appeal_cta_invest">Обсудить инвестиции</a>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="press" id="press">
+        <div class="container">
+            <p class="kicker" data-i18n="press_kicker">03 · О нас пишут</p>
+            <h2 data-i18n="press_h2">«Кодовое слово» — «Фармацевтический вестник» о ФарМозге</h2>
+            <p class="sub" data-i18n="press_sub">№ 10 (1199), сентябрь 2026, рубрика «Бизнес → Стартап». Текст: Екатерина Погонцева. Как работает стартап, где основной сотрудник — искусственный интеллект.</p>
+            <div class="press-stats">
+                <div class="press-stat"><strong>85%</strong><span data-i18n="press_stat1">точность автоматической классификации данных</span></div>
+                <div class="press-stat"><strong data-i18n="press_stat2_v">10 тыс. ₽</strong><span data-i18n="press_stat2">в месяц на инфраструктуру — виртуальные машины «Яндекса»</span></div>
+                <div class="press-stat"><strong>2</strong><span data-i18n="press_stat3">штатных сотрудника, остальное делают ИИ-агенты</span></div>
+                <div class="press-stat"><strong data-i18n="press_stat4_v">2025</strong><span data-i18n="press_stat4">компания зарегистрирована в ноябре</span></div>
+            </div>
+            <div class="press-quotes">
+                <figure class="press-quote">
+                    <blockquote data-i18n="press_q1">«Мой подход: не нужен Ferrari, чтобы ездить за хлебом. Если задачу прекрасно решает локальная модель на 14 млрд параметров, зачем отправлять конфиденциальный документ в огромную внешнюю модель?»</blockquote>
+                    <figcaption data-i18n="press_q1_by">Константин Кошечкин</figcaption>
+                </figure>
+                <figure class="press-quote">
+                    <blockquote data-i18n="press_q2">«Нам недостаточно сказать: „Модель показала точность 95%“. Нужно понимать, где именно она ошиблась, почему она ошиблась и можно ли доказать, что результат был получен корректно».</blockquote>
+                    <figcaption data-i18n="press_q2_by">Константин Кошечкин</figcaption>
+                </figure>
+                <figure class="press-quote">
+                    <blockquote data-i18n="press_q3">«Идеальная ситуация — когда нас так и останется двое, потому что всю основную разработку и тестирование мы ведём с помощью ИИ. Фактически разработчик сегодня превращается в оператора, который руководит комплексом ИИ-агентов».</blockquote>
+                    <figcaption data-i18n="press_q3_by">Руслан Калашников</figcaption>
+                </figure>
+                <figure class="press-quote">
+                    <blockquote data-i18n="press_q4">«Я считаю ошибкой строить фармацевтическую ИИ-систему вокруг одной конкретной LLM. Модель должна быть сменным компонентом, а не фундаментом всей архитектуры».</blockquote>
+                    <figcaption data-i18n="press_q4_by">Константин Кошечкин</figcaption>
+                </figure>
             </div>
         </div>
     </section>
@@ -574,19 +729,19 @@
             <h2 data-i18n="team_h2">Кто делает системы</h2>
             <div class="team-grid">
                 <article class="team-card">
-                    <img src="1517584992362.jpeg" alt="Руслан Калашников">
+                    <img src="1517584992362.jpeg" data-i18n-alt="team1_name" alt="Руслан Калашников">
                     <div>
-                        <h3>Руслан Калашников</h3>
+                        <h3 data-i18n="team1_name">Руслан Калашников</h3>
                         <p class="role" data-i18n="team1_role">Генеральный директор</p>
-                        <p data-i18n="team1_bio">Создатель ведущих российских GMP-ориентированных eQMS и LIMS. Эксперт по компьютеризированным системам по GAMP 5.</p>
+                        <p data-i18n="team1_bio">Практикующий эксперт по внедрению компьютеризированных систем, создатель российских GMP-ориентированных eQMS и LIMS. Преподаёт в Евразийской академии надлежащих практик и в магистратуре Сеченовского университета.</p>
                     </div>
                 </article>
                 <article class="team-card">
-                    <img src="1743798159307.jpeg" alt="Константин Кошечкин">
+                    <img src="1743798159307.jpeg" data-i18n-alt="team2_name" alt="Константин Кошечкин">
                     <div>
-                        <h3>Константин Кошечкин</h3>
+                        <h3 data-i18n="team2_name">Константин Кошечкин</h3>
                         <p class="role" data-i18n="team2_role">Руководитель разработки, доктор фармацевтических наук</p>
-                        <p data-i18n="team2_bio">AI/ML, QMS, ERP, eCTD, eTMF, PV, eBR, LIMS, MES, RWD & RWE. Участник ISPE.</p>
+                        <p data-i18n="team2_bio">В прошлом — сотрудник Научного центра экспертизы средств медицинского применения Минздрава России, разрабатывал ИТ-системы для регистрации лекарств. Руководит ИТ-направлением в лабораторном центре Оксфордского университета, где с помощью ИИ разрабатывают онковакцины. Участник ISPE.</p>
                     </div>
                 </article>
             </div>
@@ -631,7 +786,7 @@
                 </form>
                 <div class="map-card">
                     <h3 data-i18n="office">Офис</h3>
-                    <p>115280, Москва, ул. Ленинская Слобода, 19, БЦ «Омега Плаза», оф. 3024/3</p>
+                    <p data-i18n="office_address">115280, Москва, ул. Ленинская Слобода, 19, БЦ «Омега Плаза», оф. 3024/3</p>
                     <p>Email: <a href="mailto:rk@pharmabrain.ru">rk@pharmabrain.ru</a><br>
                     <span data-i18n="phone_label">Телефон</span>: <a href="tel:+79261291266">+7 926 129-12-66</a><br>
                     Telegram: <a href="https://t.me/Ruslan_V_Kalashnikov" target="_blank" rel="noopener">@Ruslan_V_Kalashnikov</a></p>
@@ -644,8 +799,8 @@
     <footer>
         <div class="container">
             <div style="display:flex; align-items:center; gap:12px;">
-                <img src="images/logo.png" alt="ФарМозг" style="height:36px; width:auto;">
-                <span>© <a href="https://lpt.digital/" target="_blank" rel="noopener">ООО «ФарМозг»</a></span>
+                <img src="images/logo.png" data-i18n-alt="brand" alt="ФарМозг" style="height:36px; width:auto;">
+                <span>© <a href="https://lpt.digital/" target="_blank" rel="noopener" data-i18n="footer_company">ООО «ФарМозг»</a></span>
             </div>
             <div data-i18n="footer_tag">Агенты, системы и обучение для фармацевтической отрасли</div>
         </div>
@@ -674,12 +829,18 @@
         </div>
     </div>
 
-    <script src="i18n.js"></script>
+    <script src="i18n.js?v=2"></script>
+    <script src="i18n.zh.js?v=2"></script>
+    <script src="i18n.ar.js?v=2"></script>
+    <script src="i18n.tr.js?v=2"></script>
+    <script src="i18n.hi.js?v=2"></script>
     <script>
         const CAT_IDS = ["all","discovery","clinical","regulatory","pv","quality","mfg","supply","commercial","layer"];
         const AGENT_CAT_IDS = ["all","knowledge","labeling","ctd","quality","pv"];
         const COURSE_CAT_IDS = ["all","basic","intermediate","advanced","expert"];
         const OFFERS = ["agents","systems","courses"];
+        const LANGS = ["ru","en","zh","ar","tr","hi"];
+        const RTL_LANGS = ["ar"];
         const grid = document.getElementById("catalogGrid");
         const filters = document.getElementById("filters");
         const prioNote = document.getElementById("prioNote");
@@ -691,7 +852,7 @@
         let openItem = null;
 
         const t = (key, vars) => {
-            let s = (I18N[lang] && I18N[lang][key]) || I18N.ru[key] || key;
+            let s = (I18N[lang] && I18N[lang][key]) || (lang !== "ru" && I18N.en[key]) || I18N.ru[key] || key;
             if (vars) Object.entries(vars).forEach(([k, v]) => { s = s.replace("{" + k + "}", v); });
             return s;
         };
@@ -703,6 +864,7 @@
 
         function applyStatic() {
             document.documentElement.lang = lang;
+            document.documentElement.dir = RTL_LANGS.includes(lang) ? "rtl" : "ltr";
             document.title = t("title");
             const meta = document.querySelector('meta[name="description"]');
             if (meta) meta.setAttribute("content", t("description"));
@@ -712,9 +874,7 @@
             document.querySelectorAll("[data-i18n-alt]").forEach(el => { el.alt = t(el.dataset.i18nAlt); });
             document.querySelectorAll("[data-i18n-aria]").forEach(el => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); });
             document.querySelectorAll("[data-i18n-title]").forEach(el => { el.setAttribute("title", t(el.dataset.i18nTitle)); });
-            document.querySelectorAll("[data-set-lang]").forEach(btn => {
-                btn.classList.toggle("active", btn.dataset.setLang === lang);
-            });
+            document.getElementById("langSelect").value = lang;
             document.querySelectorAll(".offer-tab").forEach(btn => {
                 btn.classList.toggle("active", btn.dataset.offer === offer);
             });
@@ -774,7 +934,7 @@
         }
 
         function renderCatalog() {
-            const locale = lang === "ru" ? "ru" : "en";
+            const locale = lang;
             if (offer === "agents") {
                 const items = AGENTS.filter(p => activeCat === "all" || p.cat === activeCat)
                     .sort((a, b) => itemName(a).localeCompare(itemName(b), locale));
@@ -845,7 +1005,9 @@
                     : t("prio_section", { n: items.length });
             grid.innerHTML = items.map(p => {
                 const name = itemName(p);
-                const badge = p.priority
+                const badge = p.live
+                    ? `<span class="badge">${t("live")}</span>`
+                    : p.priority
                     ? `<span class="badge">${t("priority", { n: p.priority })}</span>`
                     : `<span class="badge muted">${t("cat_" + p.cat)}</span>`;
                 return `
@@ -927,6 +1089,7 @@
             document.getElementById("modalFormsTitle").hidden = !hasForms;
             document.getElementById("modalForms").hidden = !hasForms;
             document.getElementById("modalForms").innerHTML = hasForms ? tags.map(f => `<span class="tag">${f}</span>`).join("") : "";
+            document.getElementById("modalAiTitle").textContent = p.featuresTitle ? loc(p.featuresTitle, lang) : t("modal_ai");
             document.getElementById("modalAiTitle").hidden = !hasAi;
             document.getElementById("modalAi").hidden = !hasAi;
             document.getElementById("modalAi").innerHTML = hasAi ? p.ai.map(a => `<li><strong>${a.t}</strong>${loc(a.d, lang)}</li>`).join("") : "";
@@ -947,8 +1110,8 @@
         }
 
         function setLang(next) {
-            lang = next === "en" ? "en" : "ru";
-            localStorage.setItem("farmozg-lang", lang);
+            lang = LANGS.includes(next) ? next : "ru";
+            try { localStorage.setItem("farmozg-lang", lang); } catch (e) {}
             const url = new URL(location.href);
             if (lang === "ru") url.searchParams.delete("lang");
             else url.searchParams.set("lang", lang);
@@ -960,9 +1123,7 @@
             if (openItem && modal.classList.contains("open")) openProduct(openItem.kind, openItem.id);
         }
 
-        document.querySelectorAll("[data-set-lang]").forEach(btn => {
-            btn.addEventListener("click", () => setLang(btn.dataset.setLang));
-        });
+        document.getElementById("langSelect").addEventListener("change", e => setLang(e.target.value));
         document.querySelectorAll("[data-offer]").forEach(el => {
             el.addEventListener("click", () => {
                 const next = el.dataset.offer;
@@ -1016,7 +1177,10 @@
         });
 
         const params = new URLSearchParams(location.search);
-        const initial = params.get("lang") || localStorage.getItem("farmozg-lang") || (navigator.language && navigator.language.toLowerCase().startsWith("en") ? "en" : "ru");
+        const browserLang = (navigator.language || "").toLowerCase().slice(0, 2);
+        let savedLang = null;
+        try { savedLang = localStorage.getItem("farmozg-lang"); } catch (e) {}
+        const initial = params.get("lang") || savedLang || (LANGS.includes(browserLang) ? browserLang : "ru");
         setLang(initial);
     </script>
 </body>

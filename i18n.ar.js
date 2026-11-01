@@ -195,6 +195,7 @@ addTranslations("ar", {
         modal_forms: "النماذج الأساسية",
         modal_ai: "وظائف الذكاء الاصطناعي في سير العمل",
         modal_cta: "اطلب عرضًا توضيحيًا لهذا النظام",
+        modal_page: "صفحة المنتج ←",
         modal_close: "إغلاق",
         img_ui: "واجهة {name}",
         img_illustration: "رسم توضيحي لواجهة {name}",

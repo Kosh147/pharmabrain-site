@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Пуансон-менеджер — управление пресс-инструментом | ФарМозг</title>
+    <meta name="description" content="Российская платформа для управления жизненным циклом пресс-инструмента: пуансоны, матрицы, сегменты. ПО, рабочее место инструментальщика и валидация под ключ."/>
+    <link rel="icon" href="images/favicon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0b1f3a;
+            --navy-2: #122a4a;
+            --teal: #0d9b8a;
+            --teal-2: #0a7a6e;
+            --teal-s: #e6f7f4;
+            --bg: #f4f7fb;
+            --card: #ffffff;
+            --text: #162436;
+            --muted: #5c6f84;
+            --line: #e2e8f0;
+            --amber: #c9841a;
+            --red: #c44b4b;
+            --shadow: 0 18px 50px rgba(11, 31, 58, 0.12);
+            --radius: 18px;
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.55;
+        }
+        a { color: inherit; }
+        img { max-width: 100%; height: auto; display: block; }
+        button, input, select, textarea { font-family: inherit; }
+        .container { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+
+        /* Nav */
+        .nav {
+            position: sticky; top: 0; z-index: 50;
+            backdrop-filter: blur(16px);
+            background: rgba(255,255,255,0.86);
+            border-bottom: 1px solid var(--line);
+        }
+        .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 24px; }
+        .logo { display: flex; align-items: center; text-decoration: none; }
+        .logo img { height: 52px; width: auto; display: block; }
+        .nav-links { display: flex; gap: 16px; align-items: center; margin-left: auto; }
+        .nav-links a { text-decoration: none; color: var(--muted); font-size: 0.92rem; font-weight: 600; }
+        .nav-links a:hover { color: var(--navy); }
+        .nav-cta { background: var(--navy); color: #fff !important; padding: 10px 16px; border-radius: 999px; }
+        .nav-tools { display: flex; align-items: center; gap: 10px; }
+        .lang-select {
+            width: auto; padding: 7px 28px 7px 12px; border: 1px solid var(--line); border-radius: 999px;
+            font-weight: 800; font-size: 12px; color: var(--navy); background-color: #fff; cursor: pointer;
+        }
+        .menu-btn { display: none; background: none; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; cursor: pointer; }
+
+        /* Scripts without Plus Jakarta Sans glyphs */
+        :lang(zh) body { font-family: "Plus Jakarta Sans", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif; }
+        :lang(ar) body { font-family: "Plus Jakarta Sans", "Geeza Pro", Tahoma, "Noto Sans Arabic", sans-serif; }
+        :lang(hi) body { font-family: "Plus Jakarta Sans", "Kohinoor Devanagari", Mangal, "Noto Sans Devanagari", sans-serif; }
+        html:lang(zh) h1, html:lang(zh) h2, html:lang(ar) h1, html:lang(ar) h2, html:lang(hi) h1, html:lang(hi) h2 { letter-spacing: 0; line-height: 1.3; }
+        html:lang(zh) .kicker, html:lang(ar) .kicker, html:lang(hi) .kicker { letter-spacing: .02em; }
+        html:lang(hi) h1, html:lang(hi) h2, html:lang(hi) h3 { line-height: 1.45; }
+
+        /* Right-to-left (Arabic) */
+        [dir="rtl"] .hero::before { background: linear-gradient(270deg, rgba(8,20,38,.94) 0%, rgba(8,20,38,.82) 50%, rgba(8,20,38,.6) 100%); }
+        [dir="rtl"] .nav-links { margin-left: 0; margin-right: auto; }
+        [dir="rtl"] .lang-select { padding: 7px 12px 7px 28px; }
+        [dir="rtl"] .check-list li { padding-left: 0; padding-right: 26px; }
+        [dir="rtl"] .check-list li::before { left: auto; right: 0; }
+        [dir="rtl"] .chain span + span::before { content: "←"; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 13px 20px; border-radius: 999px; text-decoration: none;
+            font-weight: 700; font-size: 0.95rem; border: 0; cursor: pointer;
+            transition: transform .15s ease, background .15s ease;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .btn-primary { background: #fff; color: var(--navy); }
+        .btn-navy { background: var(--navy); color: #fff; }
+        .btn-teal { background: var(--teal); color: #fff; }
+        .btn-ghost { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.28); }
+
+        /* Hero */
+        .hero {
+            position: relative; color: #fff; overflow: hidden;
+            background: var(--navy) url("images/hero-bg.jpg") center/cover no-repeat;
+        }
+        .hero::before {
+            content: ""; position: absolute; inset: 0;
+            background: linear-gradient(90deg, rgba(8,20,38,.94) 0%, rgba(8,20,38,.82) 50%, rgba(8,20,38,.6) 100%);
+        }
+        .hero-grid {
+            position: relative; z-index: 1;
+            display: grid; grid-template-columns: .9fr 1.1fr; gap: 48px;
+            align-items: center; padding: 72px 0 64px;
+        }
+        .eyebrow {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(13,155,138,.16); color: #9ee8dc;
+            border: 1px solid rgba(13,155,138,.35);
+            padding: 6px 12px; border-radius: 999px;
+            font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+        }
+        .hero h1 {
+            margin: 18px 0 16px; font-size: clamp(2.2rem, 4.6vw, 3.8rem);
+            line-height: 1.05; letter-spacing: -0.04em; font-weight: 800;
+        }
+        .hero-lead { font-size: 1.12rem; color: #d5deea; max-width: 520px; margin: 0 0 28px; }
+        .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+        .hero-meta { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 28px; color: #b7c5d6; font-size: 13px; font-weight: 600; }
+        .hero-meta span { display: flex; align-items: center; gap: 8px; }
+        .hero-meta span::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--teal); }
+        .shot-wrap {
+            background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+            border-radius: 20px; padding: 10px; box-shadow: var(--shadow);
+        }
+        .shot-wrap img { border-radius: 12px; }
+
+        /* Sections */
+        section { padding: 88px 0; scroll-margin-top: 68px; }
+        section.white { background: #fff; }
+        .kicker { color: var(--teal-2); font-weight: 800; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; margin: 0 0 10px; }
+        h2 { font-size: clamp(1.7rem, 3vw, 2.4rem); letter-spacing: -0.03em; margin: 0 0 12px; line-height: 1.2; }
+        .sub { color: var(--muted); font-size: 1.05rem; max-width: 720px; margin: 0; }
+
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 36px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 36px; }
+        .card { border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; background: var(--bg); }
+        section:not(.white) .card { background: #fff; }
+        .card h3 { margin: 0 0 8px; font-size: 1.05rem; }
+        .card p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+        .card .n {
+            display: inline-grid; place-items: center; width: 40px; height: 40px; margin-bottom: 14px;
+            border-radius: 12px; background: var(--navy); color: #fff; font-weight: 800; font-size: 14px;
+        }
+        .card.accent h3 { color: var(--teal-2); }
+
+        /* Risk chain */
+        .chain { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 22px; }
+        .chain span {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-weight: 800; color: var(--red); font-size: 0.95rem;
+        }
+        .chain span + span::before { content: "→"; color: var(--muted); font-weight: 600; }
+        .chain span:last-child { color: #fff; background: var(--red); padding: 6px 14px; border-radius: 999px; }
+
+        /* Lifecycle */
+        .life-steps { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+        .life-steps span {
+            background: var(--teal-s); color: var(--teal-2); font-weight: 700; font-size: 12px;
+            padding: 5px 10px; border-radius: 999px;
+        }
+
+        /* Screens tour */
+        .tour-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 36px 0 20px; }
+        .tour-tab {
+            border: 1px solid var(--line); background: #fff; color: var(--muted);
+            border-radius: 999px; padding: 8px 14px; font-weight: 700; font-size: 13px; cursor: pointer;
+        }
+        .tour-tab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+        .tour-stage {
+            display: grid; grid-template-columns: 1.6fr .8fr; gap: 28px; align-items: start;
+            background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 18px;
+        }
+        .tour-stage a { display: block; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: #eaf0f6; }
+        .tour-stage img { width: 100%; aspect-ratio: 1189/783; object-fit: cover; object-position: top left; }
+        .tour-copy { padding: 10px 6px; }
+        .tour-copy .kicker { margin-bottom: 6px; }
+        .tour-copy h3 { margin: 0 0 10px; font-size: 1.4rem; letter-spacing: -0.02em; }
+        .tour-copy p { margin: 0 0 16px; color: var(--muted); }
+        .tour-nav { display: flex; gap: 8px; }
+        .tour-nav button {
+            width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line);
+            background: #fff; cursor: pointer; font-size: 18px; color: var(--navy);
+        }
+        [dir="rtl"] .tour-nav button { transform: scaleX(-1); }
+        .tour-note { margin: 14px 0 0; color: var(--muted); font-size: 13px; }
+
+        /* Workplace */
+        .check-list { list-style: none; padding: 0; margin: 14px 0 0; }
+        .check-list li { position: relative; padding: 7px 0 7px 26px; color: var(--muted); }
+        .check-list li::before {
+            content: "✓"; position: absolute; left: 0; top: 7px; color: var(--teal); font-weight: 800;
+        }
+
+        /* Demo */
+        .demo-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 36px; counter-reset: demo; }
+        .demo-steps li {
+            list-style: none; counter-increment: demo;
+            background: var(--bg); border: 1px solid var(--line); border-radius: 16px; padding: 18px; font-weight: 700;
+        }
+        .demo-steps li::before {
+            content: counter(demo); display: grid; place-items: center; width: 34px; height: 34px; margin-bottom: 12px;
+            border-radius: 50%; background: var(--teal); color: #fff; font-size: 14px;
+        }
+        .demo-steps { padding: 0; }
+
+        /* Results */
+        .results { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 36px; }
+        .result { background: var(--navy); color: #fff; border-radius: 18px; padding: 22px; }
+        .result strong { display: block; font-size: 2.2rem; letter-spacing: -0.03em; line-height: 1.1; color: #9ee8dc; margin-bottom: 10px; }
+        .result h3 { margin: 0 0 8px; font-size: 1.05rem; }
+        .result p { margin: 0; color: #c9d6e6; font-size: 0.92rem; }
+
+        /* Pricing */
+        .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 36px; }
+        .plan { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 28px; display: flex; flex-direction: column; }
+        .plan.main { border: 2px solid var(--teal); box-shadow: var(--shadow); }
+        .plan h3 { margin: 0; font-size: 1.25rem; }
+        .plan .price { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; margin: 10px 0 4px; color: var(--navy); }
+        .plan .lead { margin: 10px 0 0; color: var(--muted); }
+        .plan .note { margin: 16px 0 0; padding: 12px 14px; background: var(--teal-s); border-radius: 12px; color: var(--teal-2); font-size: 0.9rem; font-weight: 600; }
+        .plan .btn { margin-top: auto; align-self: flex-start; }
+        .plan .check-list { margin-bottom: 22px; }
+
+        /* Contact */
+        #contact { background: var(--navy); color: #fff; }
+        #contact .sub { color: #c9d6e6; }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; }
+        .form { background: #fff; color: var(--text); border-radius: 20px; padding: 28px; }
+        .form-row { margin-bottom: 14px; }
+        label { display: block; font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+        input, select, textarea {
+            width: 100%; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px;
+            font-size: 15px; background: #fff;
+        }
+        textarea { min-height: 110px; resize: vertical; }
+        .contact-card { color: #d7e2ee; }
+        .contact-card h3 { margin: 0 0 12px; color: #fff; }
+        .contact-card dl { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; margin: 0; }
+        .contact-card dt { color: #9aabc0; font-size: 14px; }
+        .contact-card dd { margin: 0; font-weight: 600; }
+        .contact-card a { color: #fff; }
+        .slogan { margin: 28px 0 0; font-size: 1.15rem; font-weight: 700; color: #9ee8dc; }
+        .toast { display: none; margin-top: 12px; padding: 12px; border-radius: 12px; font-weight: 600; text-align: center; }
+        .toast.ok { display: block; background: #d4edda; color: #155724; }
+        .toast.err { display: block; background: #f8d7da; color: #721c24; }
+
+        footer { background: #081422; color: #9aabc0; padding: 28px 0; font-size: 14px; }
+        footer .container { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+        footer a { color: #e8eef5; text-decoration: none; }
+
+        @media (max-width: 980px) {
+            .hero-grid, .grid-3, .grid-2, .tour-stage, .plans, .contact-grid { grid-template-columns: 1fr; }
+            .results { grid-template-columns: 1fr 1fr; }
+            .demo-steps { grid-template-columns: 1fr 1fr; }
+            .nav-links { display: none; margin-left: 0; }
+            .nav-links.open {
+                display: flex; flex-direction: column; position: absolute; top: 68px; left: 0; right: 0;
+                background: #fff; padding: 16px; border-bottom: 1px solid var(--line); align-items: flex-start;
+            }
+            [dir="rtl"] .nav-links.open { margin-right: 0; }
+            .menu-btn { display: block; }
+            .hero-grid { padding: 48px 0; }
+        }
+        @media (max-width: 640px) {
+            .container { width: min(1180px, calc(100% - 28px)); }
+            section { padding: 64px 0; }
+            .results, .demo-steps { grid-template-columns: 1fr; }
+            .plan { padding: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="nav">
+        <div class="container nav-inner">
+            <a class="logo" href="./" id="homeLink"><img src="images/logo.png" data-i18n-alt="brand" alt="ФарМозг"></a>
+            <nav class="nav-links" id="navLinks">
+                <a href="./" id="backLink" data-i18n="tms_nav_back">← Все продукты</a>
+                <a href="#screens" data-i18n="tms_nav_screens">Интерфейс</a>
+                <a href="#workplace" data-i18n="tms_nav_workplace">Рабочее место</a>
+                <a href="#pricing" data-i18n="tms_nav_pricing">Комплекты поставки</a>
+                <a class="nav-cta" href="#contact" data-i18n="tms_nav_demo">Запросить демо</a>
+            </nav>
+            <div class="nav-tools">
+                <select class="lang-select" id="langSelect" aria-label="Language" data-i18n-aria="lang">
+                    <option value="ru">RU · Русский</option>
+                    <option value="en">EN · English</option>
+                    <option value="zh">中文</option>
+                    <option value="ar">العربية</option>
+                    <option value="tr">TR · Türkçe</option>
+                    <option value="hi">हिन्दी</option>
+                </select>
+                <button class="menu-btn" id="menuBtn" data-i18n-aria="menu" aria-label="Меню">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" id="top">
+        <div class="container hero-grid">
+            <div>
+                <span class="eyebrow" data-i18n="tms_eyebrow">ФарМозг · Управление пресс-оборудованием</span>
+                <h1 data-i18n="tms_h1">Пуансон-менеджер</h1>
+                <p class="hero-lead" data-i18n="tms_lead">Российская платформа для управления жизненным циклом пресс-инструмента. Аппаратно-программный комплекс для инструментальной комнаты.</p>
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="#contact" data-i18n="tms_cta_demo">Запросить демо</a>
+                    <a class="btn btn-ghost" href="#pricing" data-i18n="tms_cta_pricing">Комплекты поставки</a>
+                </div>
+                <div class="hero-meta">
+                    <span data-i18n="tms_meta1">Пуансоны, матрицы, сегменты</span>
+                    <span data-i18n="tms_meta2">21 CFR Part 11</span>
+                    <span data-i18n="tms_meta3">Серверы в РФ</span>
+                </div>
+            </div>
+            <div class="shot-wrap">
+                <img data-shot="dashboard" src="images/tms/dashboard.ru.jpg" width="1189" height="783" data-i18n-alt="tms_shot1_h" alt="Обзор">
+            </div>
+        </div>
+    </section>
+
+    <section class="white" id="market">
+        <div class="container">
+            <p class="kicker" data-i18n="tms_market_kicker">01 · Рынок</p>
+            <h2 data-i18n="tms_market_h2">Что произошло с рынком управления инструментом?</h2>
+            <div class="grid-3">
+                <article class="card accent">
+                    <h3 data-i18n="tms_market1_h">Уход международных вендоров</h3>
+                    <p data-i18n="tms_market1_p">Топовые игроки рынка (приборы, оснастка, софт) прекратили официальное сопровождение. Остались только «серые» поставки и неподдерживаемое ПО.</p>
+                </article>
+                <article class="card accent">
+                    <h3 data-i18n="tms_market2_h">Риски для производства</h3>
+                    <p data-i18n="tms_market2_p">Нелицензионный или неподдерживаемый софт — красный флаг для инспекторов GMP.</p>
+                </article>
+                <article class="card accent">
+                    <h3 data-i18n="tms_market3_h">Сложность учёта</h3>
+                    <p data-i18n="tms_market3_p">Учёт сотен пуансонов и матриц в Excel и на бумаге ведёт к человеческому фактору, ошибкам и браку.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="risks">
+        <div class="container">
+            <p class="kicker" data-i18n="tms_risk_kicker">02 · Риски</p>
+            <h2 data-i18n="tms_risk_h2">Чем грозит плохой учёт пресс-инструмента?</h2>
+            <div class="grid-3">
+                <article class="card">
+                    <span class="n">01</span>
+                    <h3 data-i18n="tms_risk1_h">Потеря прослеживаемости</h3>
+                    <p data-i18n="tms_risk1_p">Нельзя доказать, каким инструментом выпускалась серия два года назад.</p>
+                </article>
+                <article class="card">
+                    <span class="n">02</span>
+                    <h3 data-i18n="tms_risk2_h">Износ и брак</h3>
+                    <p data-i18n="tms_risk2_p">Пропуск обслуживания → разрушение инструмента на прессе → остановка партии → расследование отклонения.</p>
+                </article>
+                <article class="card">
+                    <span class="n">03</span>
+                    <h3 data-i18n="tms_risk3_h">Хаос в инструментальной</h3>
+                    <p data-i18n="tms_risk3_p">Долгий поиск комплекта, нет статусов: мойка, замер, склад, ремонт.</p>
+                </article>
+            </div>
+            <div class="chain">
+                <span data-i18n="tms_chain1">Ошибка учёта</span>
+                <span data-i18n="tms_chain2">Брак</span>
+                <span data-i18n="tms_chain3">Остановка</span>
+                <span data-i18n="tms_chain4">Убытки</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="white" id="solution">
+        <div class="container">
+            <p class="kicker" data-i18n="tms_sol_kicker">03 · Решение</p>
+            <h2 data-i18n="tms_sol_h2">Экосистема «Пуансон-менеджер»</h2>
+            <p class="sub" data-i18n="tms_sol_sub">Комплексное решение «под ключ».</p>
+            <div class="grid-3">
+                <article class="card">
+                    <span class="n">01</span>
+                    <h3 data-i18n="tms_sol1_h">ПО «Пуансон-менеджер»</h3>
+                    <p data-i18n="tms_sol1_p">Полная цифровая копия жизненного цикла инструмента.</p>
+                </article>
+                <article class="card">
+                    <span class="n">02</span>
+                    <h3 data-i18n="tms_sol2_h">Аппаратная часть</h3>
+                    <p data-i18n="tms_sol2_p">Готовое рабочее место инструментальщика с периферией.</p>
+                </article>
+                <article class="card">
+                    <span class="n">03</span>
+                    <h3 data-i18n="tms_sol3_h">Полная валидация системы</h3>
+                    <p data-i18n="tms_sol3_p">Поддержка процедур для подтверждения соответствия требованиям GMP и целостности данных.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="lifecycle">
+        <div class="container">
+            <p class="kicker" data-i18n="tms_life_kicker">04 · Жизненный цикл</p>
+            <h2 data-i18n="tms_life_h2">Полный контроль жизненного цикла инструмента</h2>
+            <div class="grid-2">
+                <article class="card accent">
+                    <h3 data-i18n="tms_life1_h">Статусы в реальном времени</h3>
+                    <p data-i18n="tms_life1_p">Готов, в использовании, требует обслуживания, в ремонте. Видно, где каждый комплект прямо сейчас.</p>
+                </article>
+                <article class="card accent">
+                    <h3 data-i18n="tms_life2_h">Этапы работы</h3>
+                    <p data-i18n="tms_life2_p">Цикл обслуживания под автоматическим контролем:</p>
+                    <div class="life-steps">
+                        <span data-i18n="tms_step1">Очистка</span>
+                        <span data-i18n="tms_step2">Оценка</span>
+                        <span data-i18n="tms_step3">Ремонт</span>
+                        <span data-i18n="tms_step4">Измерение</span>
+                        <span data-i18n="tms_step5">Полировка</span>
+                        <span data-i18n="tms_step6">Смазка</span>
+                        <span data-i18n="tms_step7">Хранение</span>
+                    </div>
+                </article>
+                <article class="card accent">
+                    <h3 data-i18n="tms_life3_h">Прослеживаемость</h3>
+                    <p data-i18n="tms_life3_p">Привязка инструмента к продукту, прессу и серии.</p>
+                </article>
+                <article class="card accent">
+                    <h3 data-i18n="tms_life4_h">21 CFR Part 11</h3>
+                    <p data-i18n="tms_life4_p">Электронные подписи, разграничение прав, неизменяемый аудит.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="white" id="screens">
+        <div class="container">
+            <p class="kicker" data-i18n="tms_tour_kicker">05 · Интерфейс</p>
+            <h2 data-i18n="tms_tour_h2">Как это выглядит в работе</h2>
+            <p class="sub" data-i18n="tms_tour_sub">Экраны рабочей версии системы. Сенсорный интерфейс для цеха на русском и английском языках.</p>
+            <div class="tour-tabs" id="tourTabs"></div>
+            <div class="tour-stage">
+                <a id="tourLink" href="images/tms/dashboard.ru.jpg" target="_blank" rel="noopener">
+                    <img id="tourImg" src="images/tms/dashboard.ru.jpg" width="1189" height="783" alt="">
+                </a>
+                <div class="tour-copy">
+                    <p class="kicker" id="tourCount"></p>
+                    <h3 id="tourTitle"></h3>
+                    <p id="tourText"></p>
+                    <div class="tour-nav">
+                        <button type="button" id="tourPrev" data-i18n-aria="tms_tour_prev" aria-label="Назад">←</button>
+                        <button type="button" id="tourNext" data-i18n-aria="tms_tour_next" aria-label="Вперёд">→</button>
+                    </div>
+                </div>
+            </div>
+            <p class="tour-note" data-i18n="tms_tour_note">Нажмите на экран, чтобы открыть его в полном размере. Данные на экранах демонстрационные.</p>
+        </div>
+    </section>
+
+    <section id="workplace">
+        <div class="container">
+            <p class="kicker" data-i18n="tms_ws_kicker">06 · Рабочее место</p>
+            <h2 data-i18n="tms_ws_h2">Оснащённое рабочее место инструментальщика</h2>
+            <p class="sub" data-i18n="tms_ws_sub">Поставляем не просто компьютер, а готовый измерительный стенд.</p>
+            <div class="grid-2">
+                <article class="card">
+                    <h3 data-i18n="tms_ws1_h">Вычислительный центр и визуальный контроль</h3>
+                    <ul class="check-list">
+                        <li data-i18n="tms_ws1_l1">Промышленный моноблок (All-in-One)</li>
+                        <li data-i18n="tms_ws1_l2">Цифровой микроскоп для фиксации сколов и дефектов</li>
+                        <li data-i18n="tms_ws1_l3">Педаль (footswitch) для работы без рук</li>
+                    </ul>
+                </article>
+                <article class="card">
+                    <h3 data-i18n="tms_ws2_h">Точные измерения</h3>
+                    <ul class="check-list">
+                        <li data-i18n="tms_ws2_l1">Цифровые индикаторы и микрометры</li>
+                        <li data-i18n="tms_ws2_l2">Держатели пуансонов B и D</li>
+                        <li data-i18n="tms_ws2_l3">Калибры</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="white" id="demo">
+        <div class="container">
+            <p class="kicker" data-i18n="tms_demo_kicker">07 · Демо</p>
+            <h2 data-i18n="tms_demo_h2">Живое демо на встрече</h2>
+            <p class="sub" data-i18n="tms_demo_sub">Покажем полный цикл работы с инструментом на реальных сценариях.</p>
+            <ol class="demo-steps">
+                <li data-i18n="tms_demo1">Выдача инструмента в производство</li>
+                <li data-i18n="tms_demo2">Возврат</li>
+                <li data-i18n="tms_demo3">Измерение</li>
+                <li data-i18n="tms_demo4">Цикл обслуживания</li>
+                <li data-i18n="tms_demo5">Формирование отчёта</li>
+            </ol>
+        </div>
+    </section>
+
+    <section id="results">
+        <div class="container">
+            <p class="kicker" data-i18n="tms_res_kicker">08 · Результат</p>
+            <h2 data-i18n="tms_res_h2">Что получает бизнес</h2>
+            <div class="results">
+                <article class="result">
+                    <strong>100%</strong>
+                    <h3 data-i18n="tms_res1_h">Готовность к аудитам</h3>
+                    <p data-i18n="tms_res1_p">Мгновенный поиск данных по серии продукции.</p>
+                </article>
+                <article class="result">
+                    <strong data-i18n="tms_res2_v">×3</strong>
+                    <h3 data-i18n="tms_res2_h">Ускорение</h3>
+                    <p data-i18n="tms_res2_p">Время на поиск и комплектацию наборов сокращается в 3 раза.</p>
+                </article>
+                <article class="result">
+                    <h3 data-i18n="tms_res3_h">Снижение затрат</h3>
+                    <p data-i18n="tms_res3_p">Превентивное обслуживание продлевает срок службы инструмента вместо ремонта после поломки.</p>
+                </article>
+                <article class="result">
+                    <h3 data-i18n="tms_res4_h">Независимость</h3>
+                    <p data-i18n="tms_res4_p">Локальная разработка, серверы в РФ, поддержка на русском, нет санкционных рисков.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="white" id="pricing">
+        <div class="container">
+            <p class="kicker" data-i18n="tms_price_kicker">09 · Инвестиции</p>
+            <h2 data-i18n="tms_price_h2">Комплекты поставки</h2>
+            <div class="plans">
+                <article class="plan main">
+                    <h3 data-i18n="tms_p1_name">Базовый</h3>
+                    <div class="price" data-i18n="tms_p1_price">2 860 000 ₽</div>
+                    <ul class="check-list">
+                        <li data-i18n="tms_p1_l1">Бессрочная лицензия на ПО</li>
+                        <li data-i18n="tms_p1_l2">Внедрение и настройка</li>
+                        <li data-i18n="tms_p1_l3">Обучение персонала</li>
+                        <li data-i18n="tms_p1_l4">1 год поддержки и обновлений</li>
+                        <li data-i18n="tms_p1_l5">Комплект валидационной документации</li>
+                        <li data-i18n="tms_p1_l6">ПК-моноблок</li>
+                        <li data-i18n="tms_p1_l7">Цифровой микроскоп</li>
+                    </ul>
+                    <p class="note" data-i18n="tms_p1_note">Поддержка со 2-го года — 400 000 ₽ ежегодно. Первый год включён в стоимость лицензии.</p>
+                    <a class="btn btn-navy" href="#contact" data-kit="basic" style="margin-top:22px;" data-i18n="tms_p_cta">Запросить расчёт</a>
+                </article>
+                <article class="plan">
+                    <h3 data-i18n="tms_p2_name">Расширенный</h3>
+                    <div class="price" data-i18n="tms_p2_price">По запросу</div>
+                    <p class="lead" data-i18n="tms_p2_lead">Всё из базового комплекта, плюс поставка и настройка дополнительного оборудования:</p>
+                    <ul class="check-list">
+                        <li data-i18n="tms_p2_l1">Микрометры</li>
+                        <li data-i18n="tms_p2_l2">Штангенциркули</li>
+                        <li data-i18n="tms_p2_l3">Прибор для измерения концентричности</li>
+                        <li data-i18n="tms_p2_l4">Микроскоп повышенной точности</li>
+                    </ul>
+                    <a class="btn btn-navy" href="#contact" data-kit="extended" data-i18n="tms_p_cta">Запросить расчёт</a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <p class="kicker" data-i18n="tms_contact_kicker">10 · Следующий шаг</p>
+            <h2 data-i18n="tms_contact_h2">Готовы попробовать систему в деле?</h2>
+            <p class="sub" data-i18n="tms_contact_sub">Предоставим тестовый доступ к интерфейсу и рассчитаем спецификацию под ваше оборудование.</p>
+            <div class="contact-grid">
+                <form class="form" id="contactForm">
+                    <div class="form-row">
+                        <label for="name" data-i18n="form_name">Имя</label>
+                        <input id="name" name="name" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="email" data-i18n="form_email">Email</label>
+                        <input id="email" name="email" type="email" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="phone" data-i18n="form_phone">Телефон</label>
+                        <input id="phone" name="phone" type="tel" placeholder="+7 (XXX) XXX-XX-XX" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="company" data-i18n="form_company">Компания</label>
+                        <input id="company" name="company">
+                    </div>
+                    <div class="form-row">
+                        <label for="kit" data-i18n="tms_form_kit">Комплект поставки</label>
+                        <select id="kit" name="kit">
+                            <option value="" data-i18n="tms_form_kit_none">Пока не знаю</option>
+                            <option value="basic" data-i18n="tms_p1_name">Базовый</option>
+                            <option value="extended" data-i18n="tms_p2_name">Расширенный</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label for="message" data-i18n="tms_form_message">Оборудование и задачи</label>
+                        <textarea id="message" name="interest" data-i18n-placeholder="tms_form_placeholder" placeholder="Например: 6 таблеточных прессов, около 300 комплектов, сейчас учёт в Excel…" required></textarea>
+                    </div>
+                    <button class="btn btn-teal" type="submit" style="width:100%; border-radius:12px;" data-i18n="form_submit">Отправить запрос</button>
+                    <div class="toast" id="formToast"></div>
+                </form>
+                <div class="contact-card">
+                    <h3 data-i18n="tms_contacts_h">Контакты</h3>
+                    <dl>
+                        <dt data-i18n="tms_contacts_company">Компания</dt>
+                        <dd data-i18n="brand">ФарМозг</dd>
+                        <dt data-i18n="tms_contacts_manager">Менеджер</dt>
+                        <dd data-i18n="tms_manager_name">Павел Андреев</dd>
+                        <dt>Email</dt>
+                        <dd><a href="mailto:TMS@pharmabrain.ru">TMS@pharmabrain.ru</a></dd>
+                        <dt data-i18n="phone_label">Телефон</dt>
+                        <dd><a href="tel:+79166832804" dir="ltr">+7 (916) 683-28-04</a></dd>
+                        <dt data-i18n="tms_contacts_site">Сайт</dt>
+                        <dd><a href="./" id="siteLink">pharmabrain.ru</a></dd>
+                    </dl>
+                    <p class="slogan" data-i18n="tms_slogan">«ФарМозг. Управляем качеством на микроуровне»</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <img src="images/logo.png" data-i18n-alt="brand" alt="ФарМозг" style="height:36px; width:auto;">
+                <span>© <a href="https://lpt.digital/" target="_blank" rel="noopener" data-i18n="footer_company">ООО «ФарМозг»</a></span>
+            </div>
+            <div data-i18n="footer_tag">Агенты, системы и обучение для фармацевтической отрасли</div>
+        </div>
+    </footer>
+
+    <script src="i18n.js?v=3"></script>
+    <script src="i18n.zh.js?v=3"></script>
+    <script src="i18n.ar.js?v=3"></script>
+    <script src="i18n.tr.js?v=3"></script>
+    <script src="i18n.hi.js?v=3"></script>
+    <script src="tooling.i18n.js?v=1"></script>
+    <script>
+        const LANGS = ["ru","en","zh","ar","tr","hi"];
+        const RTL_LANGS = ["ar"];
+        const SHOTS = ["dashboard","sets","history","issue","service","measuring","reports","audit"];
+        let lang = "ru";
+        let shot = 0;
+
+        // Page strings (TMS_I18N) first, then the shared site strings (I18N); English, then Russian, as fallback.
+        const t = (key) => {
+            for (const dict of [window.TMS_I18N, window.I18N]) {
+                const s = (dict[lang] && dict[lang][key]) || (lang !== "ru" && dict.en[key]);
+                if (s) return s;
+            }
+            return TMS_I18N.ru[key] || I18N.ru[key] || key;
+        };
+        const shotSrc = (id) => "images/tms/" + id + (lang === "ru" ? ".ru.jpg" : ".en.jpg");
+
+        function renderTour() {
+            const n = shot + 1;
+            const img = document.getElementById("tourImg");
+            img.src = shotSrc(SHOTS[shot]);
+            img.alt = t("tms_shot" + n + "_h");
+            document.getElementById("tourLink").href = img.src;
+            document.getElementById("tourCount").textContent = n + " / " + SHOTS.length;
+            document.getElementById("tourTitle").textContent = t("tms_shot" + n + "_h");
+            document.getElementById("tourText").textContent = t("tms_shot" + n + "_p");
+            const tabs = document.getElementById("tourTabs");
+            tabs.innerHTML = SHOTS.map((_, i) =>
+                `<button type="button" class="tour-tab${i === shot ? " active" : ""}" data-shot-i="${i}">${t("tms_shot" + (i + 1) + "_h")}</button>`
+            ).join("");
+        }
+
+        function applyStatic() {
+            document.documentElement.lang = lang;
+            document.documentElement.dir = RTL_LANGS.includes(lang) ? "rtl" : "ltr";
+            document.title = t("tms_title");
+            const meta = document.querySelector('meta[name="description"]');
+            if (meta) meta.setAttribute("content", t("tms_description"));
+            document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
+            document.querySelectorAll("[data-i18n-placeholder]").forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
+            document.querySelectorAll("[data-i18n-alt]").forEach(el => { el.alt = t(el.dataset.i18nAlt); });
+            document.querySelectorAll("[data-i18n-aria]").forEach(el => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); });
+            document.querySelectorAll("img[data-shot]").forEach(el => { el.src = shotSrc(el.dataset.shot); });
+            const home = lang === "ru" ? "./" : "./?lang=" + lang;
+            ["homeLink", "backLink", "siteLink"].forEach(id => { document.getElementById(id).href = home; });
+            document.getElementById("langSelect").value = lang;
+            renderTour();
+        }
+
+        function setLang(next) {
+            lang = LANGS.includes(next) ? next : "ru";
+            try { localStorage.setItem("farmozg-lang", lang); } catch (e) {}
+            const url = new URL(location.href);
+            if (lang === "ru") url.searchParams.delete("lang");
+            else url.searchParams.set("lang", lang);
+            history.replaceState(null, "", url.pathname + url.search + url.hash);
+            applyStatic();
+        }
+
+        document.getElementById("langSelect").addEventListener("change", e => setLang(e.target.value));
+        document.getElementById("tourTabs").addEventListener("click", e => {
+            const b = e.target.closest("[data-shot-i]");
+            if (b) { shot = +b.dataset.shotI; renderTour(); }
+        });
+        document.getElementById("tourPrev").onclick = () => { shot = (shot + SHOTS.length - 1) % SHOTS.length; renderTour(); };
+        document.getElementById("tourNext").onclick = () => { shot = (shot + 1) % SHOTS.length; renderTour(); };
+        document.querySelectorAll("[data-kit]").forEach(a => {
+            a.addEventListener("click", () => { document.getElementById("kit").value = a.dataset.kit; });
+        });
+        document.getElementById("menuBtn").onclick = () => document.getElementById("navLinks").classList.toggle("open");
+        document.getElementById("navLinks").querySelectorAll("a").forEach(a => {
+            a.addEventListener("click", () => document.getElementById("navLinks").classList.remove("open"));
+        });
+
+        document.getElementById("contactForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const toast = document.getElementById("formToast");
+            // The request always names the product and kit in Russian, so the team reads it the same way in every language.
+            const kit = form.kit.value === "basic" ? TMS_I18N.ru.tms_p1_name : form.kit.value === "extended" ? TMS_I18N.ru.tms_p2_name : "";
+            const product = TMS_I18N.ru.tms_h1 + (kit ? " · " + TMS_I18N.ru.tms_form_kit + ": " + kit : "");
+            const interest = [I18N.ru.product_prefix + product, form.interest.value].join("\n");
+            try {
+                const response = await fetch("https://pharmabrain.ru/PharmAI/api/contact", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        name: form.name.value,
+                        email: form.email.value,
+                        phone: form.phone.value,
+                        company: form.company.value || null,
+                        interest
+                    })
+                });
+                const result = await response.json();
+                toast.className = "toast " + (result.success ? "ok" : "err");
+                toast.textContent = result.success ? result.message : (result.error || t("form_fail"));
+                if (result.success) form.reset();
+            } catch (err) {
+                toast.className = "toast err";
+                toast.textContent = t("tms_form_fail_mail");
+            }
+        });
+
+        const params = new URLSearchParams(location.search);
+        const browserLang = (navigator.language || "").toLowerCase().slice(0, 2);
+        let savedLang = null;
+        try { savedLang = localStorage.getItem("farmozg-lang"); } catch (e) {}
+        setLang(params.get("lang") || savedLang || (LANGS.includes(browserLang) ? browserLang : "ru"));
+    </script>
+</body>
+</html>

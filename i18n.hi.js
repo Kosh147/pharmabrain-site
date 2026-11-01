@@ -195,6 +195,7 @@ addTranslations("hi", {
         modal_forms: "मुख्य फ़ॉर्म",
         modal_ai: "वर्कफ़्लो में AI कार्य",
         modal_cta: "इस सिस्टम के डेमो का अनुरोध करें",
+        modal_page: "उत्पाद पृष्ठ →",
         modal_close: "बंद करें",
         img_ui: "{name} इंटरफ़ेस",
         img_illustration: "{name} इंटरफ़ेस का चित्रण",

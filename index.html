@@ -284,7 +284,7 @@
         .course-shot--intermediate { background: linear-gradient(145deg, #0a5c54, #0d9b8a); }
         .course-shot--advanced { background: linear-gradient(145deg, #122a4a, #2a5a8a); }
         .course-shot--expert { background: linear-gradient(145deg, #6a4a10, #c9841a); }
-        .course-shot[hidden], #modalImg[hidden] { display: none !important; }
+        .course-shot[hidden], #modalImg[hidden], #modalPage[hidden] { display: none !important; }
         .course-hours { font-size: 1.55rem; font-weight: 800; letter-spacing: -0.03em; }
         .course-level { margin-top: 4px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .88; }
         .modal-shot .course-shot { min-height: 160px; }
@@ -824,16 +824,17 @@
                 <ul class="ai-list" id="modalAi"></ul>
                 <div class="card-actions" style="margin-top:22px;">
                     <a class="btn btn-navy" id="modalCta" href="#contact" data-i18n="modal_cta">Запросить демо этой системы</a>
+                    <a class="btn btn-line" id="modalPage" href="#" hidden data-i18n="modal_page">Страница продукта →</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="i18n.js?v=2"></script>
-    <script src="i18n.zh.js?v=2"></script>
-    <script src="i18n.ar.js?v=2"></script>
-    <script src="i18n.tr.js?v=2"></script>
-    <script src="i18n.hi.js?v=2"></script>
+    <script src="i18n.js?v=3"></script>
+    <script src="i18n.zh.js?v=3"></script>
+    <script src="i18n.ar.js?v=3"></script>
+    <script src="i18n.tr.js?v=3"></script>
+    <script src="i18n.hi.js?v=3"></script>
     <script>
         const CAT_IDS = ["all","discovery","clinical","regulatory","pv","quality","mfg","supply","commercial","layer"];
         const AGENT_CAT_IDS = ["all","knowledge","labeling","ctd","quality","pv"];
@@ -1096,6 +1097,9 @@
             const cta = document.getElementById("modalCta");
             cta.textContent = kind === "course" ? t("modal_cta_course") : t("modal_cta");
             cta.onclick = () => pickProduct(name);
+            const page = document.getElementById("modalPage");
+            page.hidden = !p.page;
+            if (p.page) page.href = p.page + (lang === "ru" ? "" : "?lang=" + lang);
             modal.classList.add("open");
             document.body.style.overflow = "hidden";
         }

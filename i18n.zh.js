@@ -195,6 +195,7 @@ addTranslations("zh", {
         modal_forms: "核心表单",
         modal_ai: "工作流中的 AI 功能",
         modal_cta: "申请该系统演示",
+        modal_page: "产品页面 →",
         modal_close: "关闭",
         img_ui: "{name} 界面",
         img_illustration: "{name} 界面示意图",

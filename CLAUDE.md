@@ -28,13 +28,23 @@ The catalog grid, filter buttons, the detail modal, and the contact-form `<selec
 - Category ids live in `CAT_IDS`, `AGENT_CAT_IDS`, and `COURSE_CAT_IDS` in the inline script. Each id needs a matching `I18N` key with the prefix `cat_`, `agent_cat_`, or `course_cat_`. A new category needs both.
 - An item's `cat` must be one of those ids, or the item won't appear under any filter or in the form select.
 - Item images are `images/agents/<img>` for agents and `images/products/<img>` for systems. Courses have no image; they render a CSS `course-shot--<cat>` tile.
-- Counts such as "21 агент", "30 систем" and "16 курсов" are hardcoded in `I18N` strings, in both languages (`hero_meta*`, `offer_*_hint`, `appeal_p1`). Update them when you add or remove catalog items.
+- Catalog counts are hardcoded in `I18N` strings: the agent count in `hero_meta2` ("21 готовый агент") and `appeal_p1` ("21 рабочего"), and the course count in `offer_courses_hint` ("16 программ"). Update them in `ru`, `en` and all four `i18n.<lang>.js` files when you add or remove items. No string states the number of systems.
 
 The page reads like a startup pitch: hero → who we are (`#why`) → the founders' Wikipedia-style appeal (`#appeal`) → press (`#press`, quotes from «Фармацевтический вестник» №10, September 2026) → what we've built (`#catalog` and the sections after it). Section kickers are numbered by hand ("01 · …"), so renumber them when you add or move a section.
 
 The language is picked from the `?lang=` URL param, then `localStorage["farmozg-lang"]`, then the browser language if it's one of `LANGS`, else Russian. The switcher is the `#langSelect` dropdown in the nav.
 
 The contact form POSTs JSON (`name`, `email`, `phone`, `company`, `interest`) to `https://pharmabrain.ru/PharmAI/api/contact`, a separate FastAPI backend that isn't in this repo. It expects `{ success, message | error }` back.
+
+## Product page: `tooling.html` (Пуансон-менеджер)
+
+A standalone landing page for the press-tooling system, built from the sales deck `ФарМозг_TMS.pdf`. The catalog item `PRODUCTS:tooling` links to it through its `page` field (the detail panel shows a "product page" button for any item with `page`).
+
+- It has its own inline CSS and script (a copy of the main page's tokens, nav, buttons and contact form), but loads `i18n.js` and the four language files for shared strings (form labels, footer, `brand`). Its own strings live in `tooling.i18n.js` as `window.TMS_I18N = { ru, en, zh, ar, tr, hi }`, all keys prefixed `tms_`. Lookup is `TMS_I18N`, then `I18N`, each with the English fallback. Every key must exist in all six languages.
+- Screenshots are in `images/tms/<screen>.ru.jpg` and `<screen>.en.jpg` (1189×783, taken from the demo app). Russian visitors see `.ru`, everyone else `.en`. The list of screens is `SHOTS` in the page script, and each screen N needs `tms_shotN_h`/`tms_shotN_p` keys.
+- The contact form posts to the same `/PharmAI/api/contact` endpoint; `interest` always names the product and chosen package in Russian.
+- It shows the deck's prices (2 860 000 ₽ basic, 400 000 ₽/year support from year 2). Update `tms_p1_price` and `tms_p1_note` in all six languages if they change.
+- Never show the demo server's address (a raw IP) on the page or in a screenshot. The validation screen shows it, so it isn't used.
 
 ## Product screenshots
 

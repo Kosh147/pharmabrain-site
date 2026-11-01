@@ -195,6 +195,7 @@ addTranslations("tr", {
         modal_forms: "Temel formlar",
         modal_ai: "İş akışındaki yapay zekâ işlevleri",
         modal_cta: "Bu sistemin demosunu talep edin",
+        modal_page: "Ürün sayfası →",
         modal_close: "Kapat",
         img_ui: "{name} arayüzü",
         img_illustration: "{name} arayüzü illüstrasyonu",

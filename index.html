@@ -114,6 +114,23 @@
         .btn-ghost { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.28); }
         .btn-line { background: #fff; color: var(--navy); border: 1px solid var(--line); }
 
+        /* Separate-product banner (Пуансон-менеджер, not AI) */
+        .product-banner {
+            background: linear-gradient(90deg, #fff4df 0%, #fffaf1 55%, #fff 100%);
+            border-bottom: 1px solid #f0dfbd;
+        }
+        [dir="rtl"] .product-banner { background: linear-gradient(270deg, #fff4df 0%, #fffaf1 55%, #fff 100%); }
+        .pb-inner { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 22px; padding: 16px 0; }
+        .pb-shot { display: block; width: 168px; border-radius: 10px; overflow: hidden; border: 1px solid #ead7b0; box-shadow: 0 8px 22px rgba(11,31,58,.10); }
+        .pb-shot img { width: 100%; height: auto; aspect-ratio: 1189/783; object-fit: cover; object-position: top left; }
+        .pb-tag {
+            display: inline-block; background: var(--amber); color: #fff; border-radius: 999px;
+            padding: 3px 10px; font-size: 11px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase;
+        }
+        .pb-name { display: block; margin: 6px 0 2px; font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; color: var(--navy); }
+        .pb-copy p { margin: 0; color: var(--muted); font-size: 0.95rem; max-width: 720px; }
+        .pb-cta { white-space: nowrap; }
+
         /* Hero */
         .hero {
             position: relative; color: #fff; overflow: hidden;
@@ -408,6 +425,8 @@
             .press-stats { grid-template-columns: 1fr 1fr; }
             .appeal-faces { height: 150px; }
             .appeal-faces img:last-child { top: 0; left: 110px; }
+            .pb-inner { grid-template-columns: auto 1fr; }
+            .pb-cta { grid-column: 1 / -1; justify-self: start; }
         }
         @media (max-width: 640px) {
             .catalog-grid { grid-template-columns: 1fr; }
@@ -415,6 +434,8 @@
             section { padding: 64px 0; }
             .why-quote { grid-template-columns: 1fr; }
             .appeal-card { padding: 22px; }
+            .pb-inner { grid-template-columns: 1fr; gap: 12px; }
+            .pb-shot { display: none; }
         }
     </style>
 </head>
@@ -443,6 +464,18 @@
             </div>
         </div>
     </header>
+
+    <aside class="product-banner" aria-labelledby="tbName">
+        <div class="container pb-inner">
+            <a class="pb-shot tb-link" href="tooling.html" tabindex="-1"><img id="tbShot" src="images/tms/dashboard.ru.jpg" width="1189" height="783" data-i18n-alt="tb_alt" alt="Главный экран Пуансон-менеджера"></a>
+            <div class="pb-copy">
+                <span class="pb-tag" data-i18n="tb_tag">Отдельный продукт · без ИИ</span>
+                <strong class="pb-name" id="tbName" data-i18n="tb_name">Пуансон-менеджер</strong>
+                <p data-i18n="tb_text">Учёт и обслуживание инструмента таблеточных прессов: пуансоны, матрицы, сегменты. ПО, рабочее место инструментальщика и валидация под ключ.</p>
+            </div>
+            <a class="btn btn-navy pb-cta tb-link" href="tooling.html" data-i18n="tb_cta">Страница продукта →</a>
+        </div>
+    </aside>
 
     <section class="hero" id="top">
         <div class="container hero-grid">
@@ -830,11 +863,11 @@
         </div>
     </div>
 
-    <script src="i18n.js?v=3"></script>
-    <script src="i18n.zh.js?v=3"></script>
-    <script src="i18n.ar.js?v=3"></script>
-    <script src="i18n.tr.js?v=3"></script>
-    <script src="i18n.hi.js?v=3"></script>
+    <script src="i18n.js?v=4"></script>
+    <script src="i18n.zh.js?v=4"></script>
+    <script src="i18n.ar.js?v=4"></script>
+    <script src="i18n.tr.js?v=4"></script>
+    <script src="i18n.hi.js?v=4"></script>
     <script>
         const CAT_IDS = ["all","discovery","clinical","regulatory","pv","quality","mfg","supply","commercial","layer"];
         const AGENT_CAT_IDS = ["all","knowledge","labeling","ctd","quality","pv"];
@@ -870,6 +903,8 @@
             const meta = document.querySelector('meta[name="description"]');
             if (meta) meta.setAttribute("content", t("description"));
             document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
+            document.querySelectorAll(".tb-link").forEach(a => { a.href = "tooling.html" + (lang === "ru" ? "" : "?lang=" + lang); });
+            document.getElementById("tbShot").src = "images/tms/dashboard." + (lang === "ru" ? "ru" : "en") + ".jpg";
             document.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
             document.querySelectorAll("[data-i18n-placeholder]").forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
             document.querySelectorAll("[data-i18n-alt]").forEach(el => { el.alt = t(el.dataset.i18nAlt); });

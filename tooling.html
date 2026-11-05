@@ -187,6 +187,11 @@
         .tour-note { margin: 14px 0 0; color: var(--muted); font-size: 13px; }
 
         /* Workplace */
+        .ws-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 18px; margin-top: 36px; align-items: stretch; }
+        .ws-cards { display: grid; gap: 18px; align-content: start; }
+        .ws-figure { margin: 0; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; }
+        .ws-figure svg { display: block; width: 100%; height: auto; border-radius: 12px; }
+        .ws-figure figcaption { margin: 12px 4px 2px; color: var(--muted); font-size: 13px; }
         .check-list { list-style: none; padding: 0; margin: 14px 0 0; }
         .check-list li { position: relative; padding: 7px 0 7px 26px; color: var(--muted); }
         .check-list li::before {
@@ -204,6 +209,7 @@
             border-radius: 50%; background: var(--teal); color: #fff; font-size: 14px;
         }
         .demo-steps { padding: 0; }
+        .demo-cta { margin-top: 28px; }
 
         /* Results */
         .results { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 36px; }
@@ -217,9 +223,7 @@
         .plan { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 28px; display: flex; flex-direction: column; }
         .plan.main { border: 2px solid var(--teal); box-shadow: var(--shadow); }
         .plan h3 { margin: 0; font-size: 1.25rem; }
-        .plan .price { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; margin: 10px 0 4px; color: var(--navy); }
         .plan .lead { margin: 10px 0 0; color: var(--muted); }
-        .plan .note { margin: 16px 0 0; padding: 12px 14px; background: var(--teal-s); border-radius: 12px; color: var(--teal-2); font-size: 0.9rem; font-weight: 600; }
         .plan .btn { margin-top: auto; align-self: flex-start; }
         .plan .check-list { margin-bottom: 22px; }
 
@@ -251,7 +255,7 @@
         footer a { color: #e8eef5; text-decoration: none; }
 
         @media (max-width: 980px) {
-            .hero-grid, .grid-3, .grid-2, .tour-stage, .plans, .contact-grid { grid-template-columns: 1fr; }
+            .hero-grid, .grid-3, .grid-2, .ws-grid, .tour-stage, .plans, .contact-grid { grid-template-columns: 1fr; }
             .results { grid-template-columns: 1fr 1fr; }
             .demo-steps { grid-template-columns: 1fr 1fr; }
             .nav-links { display: none; margin-left: 0; }
@@ -313,7 +317,7 @@
                 </div>
             </div>
             <div class="shot-wrap">
-                <img data-shot="dashboard" src="images/tms/dashboard.ru.jpg" width="1189" height="783" data-i18n-alt="tms_shot1_h" alt="Обзор">
+                <img data-shot="dashboard" src="images/tms/dashboard.ru.jpg" width="1189" height="783" data-i18n-alt="tms_shot1_h" alt="Главный экран">
             </div>
         </div>
     </section>
@@ -439,7 +443,7 @@
                     <img id="tourImg" src="images/tms/dashboard.ru.jpg" width="1189" height="783" alt="">
                 </a>
                 <div class="tour-copy">
-                    <p class="kicker" id="tourCount"></p>
+                    <p class="kicker" id="tourName"></p>
                     <h3 id="tourTitle"></h3>
                     <p id="tourText"></p>
                     <div class="tour-nav">
@@ -457,13 +461,109 @@
             <p class="kicker" data-i18n="tms_ws_kicker">06 · Рабочее место</p>
             <h2 data-i18n="tms_ws_h2">Оснащённое рабочее место инструментальщика</h2>
             <p class="sub" data-i18n="tms_ws_sub">Поставляем не просто компьютер, а готовый измерительный стенд.</p>
-            <div class="grid-2">
+            <div class="ws-grid">
+                <figure class="ws-figure">
+                    <svg viewBox="0 0 640 420" role="img" data-i18n-aria="tms_ws_fig" aria-label="Рабочее место инструментальщика" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="wsBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef4fa"/><stop offset="1" stop-color="#dfe9f3"/></linearGradient>
+                            <linearGradient id="wsDesk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9d4e0"/><stop offset="1" stop-color="#aebccb"/></linearGradient>
+                            <linearGradient id="wsSteel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9aa8b8"/><stop offset=".5" stop-color="#e9eef4"/><stop offset="1" stop-color="#8d9bab"/></linearGradient>
+                            <linearGradient id="wsGranite" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4656"/><stop offset="1" stop-color="#232d3a"/></linearGradient>
+                        </defs>
+                        <rect width="640" height="420" fill="url(#wsBg)"/>
+                        <rect x="0" y="0" width="640" height="300" fill="#f6f9fc" opacity=".55"/>
+                        <!-- desk -->
+                        <rect x="16" y="318" width="608" height="18" rx="4" fill="url(#wsDesk)"/>
+                        <rect x="16" y="334" width="608" height="6" fill="#95a5b6"/>
+                        <rect x="40" y="340" width="14" height="80" fill="#8696a8"/>
+                        <rect x="586" y="340" width="14" height="80" fill="#8696a8"/>
+                        <ellipse cx="320" cy="318" rx="300" ry="3" fill="#0b1f3a" opacity=".06"/>
+                        <!-- all-in-one PC -->
+                        <path d="M150 258 L196 258 L210 314 L136 314 Z" fill="#b8c4d2"/>
+                        <rect x="118" y="310" width="110" height="9" rx="4" fill="#9fadbd"/>
+                        <rect x="30" y="46" width="290" height="216" rx="12" fill="#0b1f3a"/>
+                        <rect x="40" y="56" width="270" height="180" rx="4" fill="#f4f7fb"/>
+                        <rect x="40" y="56" width="58" height="180" fill="#122a4a"/>
+                        <rect x="50" y="68" width="38" height="6" rx="3" fill="#0d9b8a"/>
+                        <rect x="50" y="86" width="34" height="4" rx="2" fill="#5c7a99"/>
+                        <rect x="50" y="98" width="30" height="4" rx="2" fill="#5c7a99"/>
+                        <rect x="50" y="110" width="36" height="4" rx="2" fill="#5c7a99"/>
+                        <rect x="50" y="122" width="28" height="4" rx="2" fill="#5c7a99"/>
+                        <rect x="108" y="66" width="44" height="34" rx="5" fill="#fff" stroke="#e2e8f0"/>
+                        <rect x="114" y="74" width="20" height="8" rx="2" fill="#0d9b8a"/>
+                        <rect x="114" y="88" width="30" height="4" rx="2" fill="#cbd5e1"/>
+                        <rect x="158" y="66" width="44" height="34" rx="5" fill="#fff" stroke="#e2e8f0"/>
+                        <rect x="164" y="74" width="16" height="8" rx="2" fill="#c9841a"/>
+                        <rect x="164" y="88" width="30" height="4" rx="2" fill="#cbd5e1"/>
+                        <rect x="208" y="66" width="44" height="34" rx="5" fill="#fff" stroke="#e2e8f0"/>
+                        <rect x="214" y="74" width="12" height="8" rx="2" fill="#c44b4b"/>
+                        <rect x="214" y="88" width="30" height="4" rx="2" fill="#cbd5e1"/>
+                        <rect x="258" y="66" width="44" height="34" rx="5" fill="#fff" stroke="#e2e8f0"/>
+                        <rect x="264" y="74" width="24" height="8" rx="2" fill="#0b1f3a"/>
+                        <rect x="264" y="88" width="30" height="4" rx="2" fill="#cbd5e1"/>
+                        <rect x="108" y="108" width="194" height="118" rx="5" fill="#fff" stroke="#e2e8f0"/>
+                        <rect x="120" y="118" width="70" height="5" rx="2" fill="#94a3b8"/>
+                        <g fill="#0d9b8a">
+                            <rect x="124" y="176" width="14" height="38" rx="2"/><rect x="146" y="160" width="14" height="54" rx="2"/>
+                            <rect x="168" y="186" width="14" height="28" rx="2"/><rect x="190" y="150" width="14" height="64" rx="2"/>
+                        </g>
+                        <rect x="212" y="170" width="14" height="44" rx="2" fill="#c9841a"/>
+                        <rect x="234" y="140" width="14" height="74" rx="2" fill="#0d9b8a"/>
+                        <rect x="256" y="194" width="14" height="20" rx="2" fill="#c44b4b"/>
+                        <rect x="278" y="164" width="14" height="50" rx="2" fill="#0d9b8a"/>
+                        <rect x="120" y="214" width="174" height="1.5" fill="#cbd5e1"/>
+                        <circle cx="175" cy="249" r="3" fill="#2b4466"/>
+                        <!-- keyboard -->
+                        <path d="M70 314 L252 314 L262 320 L60 320 Z" fill="#dfe6ee" stroke="#b6c2cf"/>
+                        <!-- cables -->
+                        <path d="M300 262 C 330 300, 360 300, 392 294" fill="none" stroke="#5c6f84" stroke-width="2.5"/>
+                        <path d="M300 250 C 400 330, 470 250, 510 300" fill="none" stroke="#5c6f84" stroke-width="2.5" opacity=".7"/>
+                        <!-- digital microscope on stand -->
+                        <rect x="372" y="296" width="112" height="22" rx="5" fill="#2b3a4d"/>
+                        <rect x="380" y="292" width="96" height="6" rx="3" fill="#3a4b60"/>
+                        <rect x="458" y="108" width="12" height="188" rx="3" fill="url(#wsSteel)"/>
+                        <rect x="406" y="146" width="66" height="16" rx="4" fill="#3a4b60"/>
+                        <circle cx="464" cy="154" r="9" fill="#26323f"/>
+                        <circle cx="464" cy="154" r="4" fill="#9aa8b8"/>
+                        <rect x="400" y="120" width="30" height="104" rx="13" fill="#e9eef4" stroke="#9aa8b8" stroke-width="2"/>
+                        <rect x="400" y="168" width="30" height="10" fill="#0d9b8a"/>
+                        <path d="M402 222 L428 222 L424 238 L406 238 Z" fill="#26323f"/>
+                        <ellipse cx="415" cy="239" rx="10" ry="3" fill="#9ee8dc"/>
+                        <path d="M404 241 L392 292 L438 292 L426 241 Z" fill="#9ee8dc" opacity=".22"/>
+                        <!-- punch under the microscope -->
+                        <rect x="404" y="262" width="22" height="30" rx="2" fill="url(#wsSteel)"/>
+                        <rect x="400" y="254" width="30" height="10" rx="3" fill="url(#wsSteel)"/>
+                        <path d="M407 292 L423 292 L421 296 L409 296 Z" fill="#7d8b9b"/>
+                        <!-- digital indicator on granite stand -->
+                        <rect x="500" y="282" width="118" height="36" rx="4" fill="url(#wsGranite)"/>
+                        <rect x="500" y="282" width="118" height="5" fill="#4a5869"/>
+                        <rect x="594" y="112" width="12" height="172" rx="3" fill="url(#wsSteel)"/>
+                        <rect x="548" y="128" width="58" height="14" rx="4" fill="#3a4b60"/>
+                        <rect x="514" y="138" width="70" height="78" rx="12" fill="#f4c542" stroke="#b8901f" stroke-width="2"/>
+                        <rect x="524" y="150" width="50" height="22" rx="3" fill="#1d2a1f"/>
+                        <rect x="530" y="156" width="38" height="10" rx="1" fill="#7be0a0" opacity=".9"/>
+                        <circle cx="534" cy="194" r="6" fill="#0b1f3a"/>
+                        <circle cx="552" cy="194" r="6" fill="#0b1f3a"/>
+                        <circle cx="570" cy="194" r="6" fill="#c44b4b"/>
+                        <rect x="545" y="216" width="8" height="14" fill="#9aa8b8"/>
+                        <rect x="547" y="228" width="4" height="16" fill="#cfd8e2"/>
+                        <circle cx="549" cy="245" r="3" fill="#5c6f84"/>
+                        <!-- punch on the granite -->
+                        <rect x="538" y="248" width="22" height="34" rx="2" fill="url(#wsSteel)"/>
+                        <path d="M534 262 L564 262 L562 270 L536 270 Z" fill="#a9b6c4"/>
+                        <!-- punch holder -->
+                        <rect x="326" y="292" width="40" height="26" rx="4" fill="#0d9b8a"/>
+                        <circle cx="336" cy="300" r="4" fill="#0a7a6e"/><circle cx="356" cy="300" r="4" fill="#0a7a6e"/>
+                        <circle cx="336" cy="311" r="4" fill="#0a7a6e"/><circle cx="356" cy="311" r="4" fill="#0a7a6e"/>
+                    </svg>
+                    <figcaption data-i18n="tms_ws_fig">Состав рабочего места: моноблок с ПО, цифровой микроскоп и цифровой индикатор (комплект «Стандарт»).</figcaption>
+                </figure>
+                <div class="ws-cards">
                 <article class="card">
                     <h3 data-i18n="tms_ws1_h">Вычислительный центр и визуальный контроль</h3>
                     <ul class="check-list">
                         <li data-i18n="tms_ws1_l1">Промышленный моноблок (All-in-One)</li>
                         <li data-i18n="tms_ws1_l2">Цифровой микроскоп для фиксации сколов и дефектов</li>
-                        <li data-i18n="tms_ws1_l3">Педаль (footswitch) для работы без рук</li>
                     </ul>
                 </article>
                 <article class="card">
@@ -474,6 +574,7 @@
                         <li data-i18n="tms_ws2_l3">Калибры</li>
                     </ul>
                 </article>
+                </div>
             </div>
         </div>
     </section>
@@ -490,6 +591,9 @@
                 <li data-i18n="tms_demo4">Цикл обслуживания</li>
                 <li data-i18n="tms_demo5">Формирование отчёта</li>
             </ol>
+            <div class="demo-cta">
+                <a class="btn btn-teal" href="#contact" data-i18n="tms_demo_cta">Записаться на демо</a>
+            </div>
         </div>
     </section>
 
@@ -522,12 +626,13 @@
 
     <section class="white" id="pricing">
         <div class="container">
-            <p class="kicker" data-i18n="tms_price_kicker">09 · Инвестиции</p>
+            <p class="kicker" data-i18n="tms_price_kicker">09 · Комплекты</p>
             <h2 data-i18n="tms_price_h2">Комплекты поставки</h2>
+            <p class="sub" data-i18n="tms_price_sub">Два варианта поставки. Стоимость рассчитываем под ваш парк прессов и объём инструмента.</p>
             <div class="plans">
-                <article class="plan main">
+                <article class="plan">
                     <h3 data-i18n="tms_p1_name">Базовый</h3>
-                    <div class="price" data-i18n="tms_p1_price">2 860 000 ₽</div>
+                    <p class="lead" data-i18n="tms_p1_lead">ПО и рабочее место: ПК-моноблок и цифровой микроскоп.</p>
                     <ul class="check-list">
                         <li data-i18n="tms_p1_l1">Бессрочная лицензия на ПО</li>
                         <li data-i18n="tms_p1_l2">Внедрение и настройка</li>
@@ -537,20 +642,15 @@
                         <li data-i18n="tms_p1_l6">ПК-моноблок</li>
                         <li data-i18n="tms_p1_l7">Цифровой микроскоп</li>
                     </ul>
-                    <p class="note" data-i18n="tms_p1_note">Поддержка со 2-го года — 400 000 ₽ ежегодно. Первый год включён в стоимость лицензии.</p>
-                    <a class="btn btn-navy" href="#contact" data-kit="basic" style="margin-top:22px;" data-i18n="tms_p_cta">Запросить расчёт</a>
+                    <a class="btn btn-navy" href="#contact" data-kit="basic" data-i18n="tms_p_cta">Запросить расчёт</a>
                 </article>
-                <article class="plan">
-                    <h3 data-i18n="tms_p2_name">Расширенный</h3>
-                    <div class="price" data-i18n="tms_p2_price">По запросу</div>
-                    <p class="lead" data-i18n="tms_p2_lead">Всё из базового комплекта, плюс поставка и настройка дополнительного оборудования:</p>
+                <article class="plan main">
+                    <h3 data-i18n="tms_p2_name">Стандарт</h3>
+                    <p class="lead" data-i18n="tms_p2_lead">Всё из базового комплекта, плюс:</p>
                     <ul class="check-list">
-                        <li data-i18n="tms_p2_l1">Микрометры</li>
-                        <li data-i18n="tms_p2_l2">Штангенциркули</li>
-                        <li data-i18n="tms_p2_l3">Прибор для измерения концентричности</li>
-                        <li data-i18n="tms_p2_l4">Микроскоп повышенной точности</li>
+                        <li data-i18n="tms_p2_l1">Цифровой индикатор для замеров инструмента</li>
                     </ul>
-                    <a class="btn btn-navy" href="#contact" data-kit="extended" data-i18n="tms_p_cta">Запросить расчёт</a>
+                    <a class="btn btn-navy" href="#contact" data-kit="standard" data-i18n="tms_p_cta">Запросить расчёт</a>
                 </article>
             </div>
         </div>
@@ -584,7 +684,7 @@
                         <select id="kit" name="kit">
                             <option value="" data-i18n="tms_form_kit_none">Пока не знаю</option>
                             <option value="basic" data-i18n="tms_p1_name">Базовый</option>
-                            <option value="extended" data-i18n="tms_p2_name">Расширенный</option>
+                            <option value="standard" data-i18n="tms_p2_name">Стандарт</option>
                         </select>
                     </div>
                     <div class="form-row">
@@ -604,7 +704,7 @@
                         <dt>Email</dt>
                         <dd><a href="mailto:TMS@pharmabrain.ru">TMS@pharmabrain.ru</a></dd>
                         <dt data-i18n="phone_label">Телефон</dt>
-                        <dd><a href="tel:+79166832804" dir="ltr">+7 (916) 683-28-04</a></dd>
+                        <dd><a href="tel:+79958812804" dir="ltr">+7 (995) 881-28-04</a></dd>
                         <dt data-i18n="tms_contacts_site">Сайт</dt>
                         <dd><a href="./" id="siteLink">pharmabrain.ru</a></dd>
                     </dl>
@@ -624,12 +724,12 @@
         </div>
     </footer>
 
-    <script src="i18n.js?v=3"></script>
-    <script src="i18n.zh.js?v=3"></script>
-    <script src="i18n.ar.js?v=3"></script>
-    <script src="i18n.tr.js?v=3"></script>
-    <script src="i18n.hi.js?v=3"></script>
-    <script src="tooling.i18n.js?v=1"></script>
+    <script src="i18n.js?v=4"></script>
+    <script src="i18n.zh.js?v=4"></script>
+    <script src="i18n.ar.js?v=4"></script>
+    <script src="i18n.tr.js?v=4"></script>
+    <script src="i18n.hi.js?v=4"></script>
+    <script src="tooling.i18n.js?v=2"></script>
     <script>
         const LANGS = ["ru","en","zh","ar","tr","hi"];
         const RTL_LANGS = ["ar"];
@@ -653,8 +753,8 @@
             img.src = shotSrc(SHOTS[shot]);
             img.alt = t("tms_shot" + n + "_h");
             document.getElementById("tourLink").href = img.src;
-            document.getElementById("tourCount").textContent = n + " / " + SHOTS.length;
-            document.getElementById("tourTitle").textContent = t("tms_shot" + n + "_h");
+            document.getElementById("tourName").textContent = t("tms_shot" + n + "_h");
+            document.getElementById("tourTitle").textContent = t("tms_shot" + n + "_t");
             document.getElementById("tourText").textContent = t("tms_shot" + n + "_p");
             const tabs = document.getElementById("tourTabs");
             tabs.innerHTML = SHOTS.map((_, i) =>
@@ -709,7 +809,7 @@
             const form = e.target;
             const toast = document.getElementById("formToast");
             // The request always names the product and kit in Russian, so the team reads it the same way in every language.
-            const kit = form.kit.value === "basic" ? TMS_I18N.ru.tms_p1_name : form.kit.value === "extended" ? TMS_I18N.ru.tms_p2_name : "";
+            const kit = form.kit.value === "basic" ? TMS_I18N.ru.tms_p1_name : form.kit.value === "standard" ? TMS_I18N.ru.tms_p2_name : "";
             const product = TMS_I18N.ru.tms_h1 + (kit ? " · " + TMS_I18N.ru.tms_form_kit + ": " + kit : "");
             const interest = [I18N.ru.product_prefix + product, form.interest.value].join("\n");
             try {

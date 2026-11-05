@@ -41,9 +41,10 @@ The contact form POSTs JSON (`name`, `email`, `phone`, `company`, `interest`) to
 A standalone landing page for the press-tooling system, built from the sales deck `ФарМозг_TMS.pdf`. The catalog item `PRODUCTS:tooling` links to it through its `page` field (the detail panel shows a "product page" button for any item with `page`).
 
 - It has its own inline CSS and script (a copy of the main page's tokens, nav, buttons and contact form), but loads `i18n.js` and the four language files for shared strings (form labels, footer, `brand`). Its own strings live in `tooling.i18n.js` as `window.TMS_I18N = { ru, en, zh, ar, tr, hi }`, all keys prefixed `tms_`. Lookup is `TMS_I18N`, then `I18N`, each with the English fallback. Every key must exist in all six languages.
-- Screenshots are in `images/tms/<screen>.ru.jpg` and `<screen>.en.jpg` (1189×783, taken from the demo app). Russian visitors see `.ru`, everyone else `.en`. The list of screens is `SHOTS` in the page script, and each screen N needs `tms_shotN_h`/`tms_shotN_p` keys.
+- Screenshots are in `images/tms/<screen>.ru.jpg` and `<screen>.en.jpg` (1189×783, taken from the demo app). Russian visitors see `.ru`, everyone else `.en`. The list of screens is `SHOTS` in the page script, and each screen N needs `tms_shotN_h` (screen name, shown as the kicker and tab), `tms_shotN_t` (headline) and `tms_shotN_p` keys.
 - The contact form posts to the same `/PharmAI/api/contact` endpoint; `interest` always names the product and chosen package in Russian.
-- It shows the deck's prices (2 860 000 ₽ basic, 400 000 ₽/year support from year 2). Update `tms_p1_price` and `tms_p1_note` in all six languages if they change.
+- Two packages, no prices on the page (removed at the owner's request; quotes go through the form): «Базовый» (software + all-in-one PC + digital microscope, kit value `basic`) and «Стандарт» (Basic + digital indicator, kit value `standard`).
+- `index.html` has a banner above the hero (`.product-banner`, `tb_*` keys in `I18N` and the four language files) presenting it as a separate, non-AI product.
 - Never show the demo server's address (a raw IP) on the page or in a screenshot. The validation screen shows it, so it isn't used.
 
 ## Product screenshots

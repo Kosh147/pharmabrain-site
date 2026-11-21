@@ -408,6 +408,64 @@
         .toast.ok { display: block; background: #d4edda; color: #155724; }
         .toast.err { display: block; background: #f8d7da; color: #721c24; }
 
+        /* New on the platform (hero links) */
+        .hero-new { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin: -8px 0 26px; color: #9ee8dc; font-size: 13px; font-weight: 700; }
+        .hero-new-links { display: flex; flex-wrap: wrap; gap: 8px; }
+        .hero-new-links a {
+            color: #fff; text-decoration: none; font-weight: 700; font-size: 13px;
+            border: 1px solid rgba(158,232,220,.45); background: rgba(13,155,138,.18);
+            padding: 6px 12px; border-radius: 999px;
+        }
+        .hero-new-links a:hover { background: rgba(13,155,138,.35); }
+
+        /* Platform systems (window.PLATFORM) */
+        .platform { background: #fff; }
+        .platform-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin: 36px 0 22px; }
+        .platform-card {
+            display: flex; flex-direction: column; text-decoration: none; color: inherit;
+            background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+        .platform-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+        .platform-shot { aspect-ratio: 16/10; overflow: hidden; background: #eaf0f6; border-bottom: 1px solid var(--line); }
+        .platform-shot img { width: 100%; height: 100%; object-fit: cover; object-position: top left; }
+        .platform-body { padding: 18px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+        .platform-body h3 { margin: 0; font-size: 1.3rem; letter-spacing: -0.02em; }
+        .platform-body p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+        .pf-tag { color: var(--teal-2); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+        .platform-foot {
+            margin-top: auto; padding-top: 12px; border-top: 1px solid var(--line);
+            display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 13px; font-weight: 700;
+        }
+        .platform-foot span:first-child { color: var(--navy-2); }
+        .pf-open { color: var(--teal-2); }
+
+        /* Plans: Individual (cloud) and Enterprise (same markup as on the system pages) */
+        .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 36px; }
+        .plan { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 28px; display: flex; flex-direction: column; }
+        .plan.main { border: 2px solid var(--teal); box-shadow: var(--shadow); }
+        .plan-tag { align-self: flex-start; font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--teal-2); background: var(--teal-s); padding: 4px 10px; border-radius: 999px; }
+        .plan h3 { margin: 12px 0 0; font-size: 1.5rem; letter-spacing: -0.02em; }
+        .plan .lead { margin: 8px 0 0; color: var(--muted); }
+        .plan .btn { margin-top: auto; align-self: flex-start; }
+        .plans-note { margin: 18px 0 0; color: var(--muted); font-size: 0.95rem; }
+        .check-list { list-style: none; padding: 0; margin: 14px 0 22px; }
+        .check-list li { position: relative; padding: 7px 0 7px 26px; }
+        .check-list li::before { content: "✓"; position: absolute; left: 0; top: 7px; color: var(--teal); font-weight: 800; }
+        [dir="rtl"] .check-list li { padding-left: 0; padding-right: 26px; }
+        [dir="rtl"] .check-list li::before { left: auto; right: 0; }
+
+        @media (max-width: 1080px) {
+            .platform-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 980px) {
+            .plans { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 640px) {
+            .platform-grid { grid-template-columns: 1fr; }
+            .plan { padding: 22px; }
+        }
+
         @media (max-width: 980px) {
             .hero-grid, .buy-grid, .catalog-grid, .layer-grid, .adv-grid, .contact-grid, .flow-grid, .team-grid, .why-grid, .press-quotes, .appeal-card {
                 grid-template-columns: 1fr;
@@ -444,6 +502,8 @@
         <div class="container nav-inner">
             <a class="logo" href="#top"><img src="images/logo.png" alt="ФарМозг"></a>
             <nav class="nav-links" id="navLinks">
+                <a href="#platform" data-i18n="nav_platform">Платформа</a>
+                <a href="#plans" data-i18n="nav_plans">Тарифы</a>
                 <a href="#why" data-i18n="nav_about">О нас</a>
                 <a href="#appeal" data-i18n="nav_appeal">Поддержать</a>
                 <a href="#press" data-i18n="nav_press">Пресса</a>
@@ -483,6 +543,10 @@
                 <div class="eyebrow" data-i18n="hero_eyebrow">ФарМозг · ИИ-стартап для фармы</div>
                 <h1 data-i18n="hero_h1">ИИ, который разбирает фармдокументы и анализирует процессы</h1>
                 <p class="hero-lead" data-i18n="hero_lead">Сотни файлов, несколько языков, требования разных регуляторов и дедлайн подачи досье. ИИ берёт на себя механическую работу — сортировку, проверку, сравнение, перевод, — а решения остаются за специалистом.</p>
+                <div class="hero-new">
+                    <span data-i18n="hero_new">Новое на платформе:</span>
+                    <div class="hero-new-links" id="heroNew"></div>
+                </div>
                 <div class="hero-actions">
                     <a class="btn btn-primary" href="#why" data-i18n="hero_cta_about">Кто мы и зачем</a>
                     <a class="btn btn-ghost" href="#catalog" data-offer="agents" data-i18n="hero_cta_catalog">Что уже сделали</a>
@@ -499,6 +563,53 @@
                     <img src="images/agents/home.png" data-i18n-alt="hero_shot_alt" alt="Каталог готовых AI-агентов PharmAI">
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section class="platform" id="platform">
+        <div class="container">
+            <p class="kicker" data-i18n="pf_kicker">01 · Платформа PharmAI</p>
+            <h2 data-i18n="pf_h2">Системы, внутри которых работают ИИ-агенты</h2>
+            <p class="sub" data-i18n="pf_sub">QMS, регистрация, поручения и фармаконадзор — рабочие системы с электронной подписью и неизменяемой историей. ИИ-агенты встроены в их этапы: черновик готовит модель, решение подписывает специалист.</p>
+            <div class="platform-grid" id="platformGrid"></div>
+            <p class="prio-note" data-i18n="pf_note">Все четыре системы работают на одной платформе: продукты, документы, поручения и подписи у них общие.</p>
+        </div>
+    </section>
+
+    <section class="plans-section" id="plans">
+        <div class="container">
+            <p class="kicker" data-i18n="plans_kicker">02 · Форматы работы</p>
+            <h2 data-i18n="plans_h2">Облако для старта, Enterprise — для своего контура</h2>
+            <p class="sub" data-i18n="plans_sub">Все системы и ИИ-агенты доступны в обоих форматах. В облаке вы платите только за ИИ-обработку, стоимость Enterprise рассчитываем под ваш проект.</p>
+            <div class="plans">
+                <article class="plan main">
+                    <span class="plan-tag" data-i18n="plan1_tag">Быстрый старт</span>
+                    <h3 data-i18n="plan1_name">Individual</h3>
+                    <p class="lead" data-i18n="plan1_lead">Работа в облаке на общем инстансе ФарМозга. Ничего не нужно устанавливать, оплата по факту.</p>
+                    <ul class="check-list">
+                        <li data-i18n="plan1_l1">Облако, общий инстанс: подключение без установки</li>
+                        <li data-i18n="plan1_l2">Pay-as-you-go: платите только за ИИ-обработку по цене выбранной модели</li>
+                        <li data-i18n="plan1_l3">Баланс пополняется по счёту, расход по каждой задаче виден в личном кабинете</li>
+                        <li data-i18n="plan1_l4">Данные вашей организации изолированы от других организаций</li>
+                        <li data-i18n="plan1_l5">Валидацию общего инстанса провели мы — без доплаты</li>
+                    </ul>
+                    <a class="btn btn-teal" href="#contact" data-plan="individual" data-i18n="plan1_cta">Начать в облаке</a>
+                </article>
+                <article class="plan">
+                    <span class="plan-tag" data-i18n="plan2_tag">Для компании</span>
+                    <h3 data-i18n="plan2_name">Enterprise</h3>
+                    <p class="lead" data-i18n="plan2_lead">Установка на собственных серверах компании, в вашем ИТ-контуре.</p>
+                    <ul class="check-list">
+                        <li data-i18n="plan2_l1">Установка на серверах компании: данные не покидают контур</li>
+                        <li data-i18n="plan2_l2">Пакет валидационной документации для IQ/OQ/PQ на вашей площадке</li>
+                        <li data-i18n="plan2_l3">Обучение пользователей и администраторов</li>
+                        <li data-i18n="plan2_l4">Поддержка по SLA: онлайн или выделенный инженер на площадке</li>
+                        <li data-i18n="plan2_l5">Свои ИИ-модели или подключение внешних — по вашей политике данных</li>
+                    </ul>
+                    <a class="btn btn-navy" href="#contact" data-plan="enterprise" data-i18n="plan2_cta">Обсудить Enterprise</a>
+                </article>
+            </div>
+            <p class="plans-note" data-i18n="plans_note">Обычно начинают с Individual: пробуют системы на своих документах, а затем переносят работу на собственные серверы.</p>
         </div>
     </section>
 
@@ -811,6 +922,14 @@
                         </select>
                     </div>
                     <div class="form-row">
+                        <label for="plan" data-i18n="form_plan">Формат работы</label>
+                        <select id="plan" name="plan">
+                            <option value="" data-i18n="form_plan_none">Пока не знаю</option>
+                            <option value="individual" data-i18n="plan1_name">Individual</option>
+                            <option value="enterprise" data-i18n="plan2_name">Enterprise</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
                         <label for="message" data-i18n="form_message">Задача или процесс</label>
                         <textarea id="message" name="interest" data-i18n-placeholder="form_placeholder" placeholder="Например: отклонения на линии, completeness eTMF, проверка анкет пациентов…" required></textarea>
                     </div>
@@ -863,11 +982,11 @@
         </div>
     </div>
 
-    <script src="i18n.js?v=4"></script>
-    <script src="i18n.zh.js?v=4"></script>
-    <script src="i18n.ar.js?v=4"></script>
-    <script src="i18n.tr.js?v=4"></script>
-    <script src="i18n.hi.js?v=4"></script>
+    <script src="i18n.js?v=5"></script>
+    <script src="i18n.zh.js?v=5"></script>
+    <script src="i18n.ar.js?v=5"></script>
+    <script src="i18n.tr.js?v=5"></script>
+    <script src="i18n.hi.js?v=5"></script>
     <script>
         const CAT_IDS = ["all","discovery","clinical","regulatory","pv","quality","mfg","supply","commercial","layer"];
         const AGENT_CAT_IDS = ["all","knowledge","labeling","ctd","quality","pv"];
@@ -945,6 +1064,31 @@
             productSelect.appendChild(g);
         }
 
+        const pageHref = (page) => page + (lang === "ru" ? "" : "?lang=" + lang);
+
+        // The platform systems (window.PLATFORM): cards in #platform and links in the hero.
+        function renderPlatform() {
+            document.getElementById("platformGrid").innerHTML = PLATFORM.map(p => `
+                <a class="platform-card" href="${pageHref(p.page)}">
+                    <div class="platform-shot"><img src="images/platform/${p.img}" width="1360" height="820" alt="${t("img_ui", { name: t("pf_" + p.id + "_name") })}" loading="lazy"></div>
+                    <div class="platform-body">
+                        <div class="product-top">
+                            <span class="pf-tag">${t("pf_" + p.id + "_tag")}</span>
+                            <span class="badge">${t("pf_new")}</span>
+                        </div>
+                        <h3>${t("pf_" + p.id + "_name")}</h3>
+                        <p>${t("pf_" + p.id + "_p")}</p>
+                        <div class="platform-foot">
+                            <span>${t("pf_agents", { n: p.agents.length })}</span>
+                            <span class="pf-open">${t("pf_open")}</span>
+                        </div>
+                    </div>
+                </a>`).join("");
+            document.getElementById("heroNew").innerHTML = PLATFORM.map(p =>
+                `<a href="${pageHref(p.page)}">${t("pf_" + p.id + "_name")}</a>`
+            ).join("");
+        }
+
         function rebuildProductSelect() {
             const prev = productSelect.value;
             productSelect.innerHTML = "";
@@ -952,6 +1096,14 @@
             placeholder.value = "";
             placeholder.textContent = t("form_product_ph");
             productSelect.appendChild(placeholder);
+            const platformGroup = document.createElement("optgroup");
+            platformGroup.label = t("nav_platform");
+            PLATFORM.forEach(p => {
+                const o = document.createElement("option");
+                o.value = o.textContent = t("pf_" + p.id + "_name");
+                platformGroup.appendChild(o);
+            });
+            productSelect.appendChild(platformGroup);
             AGENT_CAT_IDS.filter(id => id !== "all").forEach(id => {
                 addGroup(t("agent_cat_" + id), AGENTS.filter(p => p.cat === id));
             });
@@ -1156,6 +1308,7 @@
             else url.searchParams.set("lang", lang);
             history.replaceState(null, "", url.pathname + url.search + url.hash);
             applyStatic();
+            renderPlatform();
             rebuildFilters();
             rebuildProductSelect();
             renderCatalog();
@@ -1177,6 +1330,9 @@
             const pick = e.target.closest("[data-pick]");
             if (pick) pickProduct(pick.dataset.pick);
         });
+        document.querySelectorAll("[data-plan]").forEach(a => {
+            a.addEventListener("click", () => { document.getElementById("plan").value = a.dataset.plan; });
+        });
         document.getElementById("modalClose").onclick = closeModal;
         modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
         document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
@@ -1192,7 +1348,9 @@
             const form = e.target;
             const toast = document.getElementById("formToast");
             const product = form.product.value;
-            const interest = [product && (t("product_prefix") + product), form.interest.value].filter(Boolean).join("\n");
+            // The plan is named in Russian, as on the product pages, so the team reads it the same way in every language.
+            const plan = form.plan.value === "individual" ? I18N.ru.plan1_name : form.plan.value === "enterprise" ? I18N.ru.plan2_name : "";
+            const interest = [product && (t("product_prefix") + product), plan && (I18N.ru.plan_prefix + plan), form.interest.value].filter(Boolean).join("\n");
             try {
                 const response = await fetch("https://pharmabrain.ru/PharmAI/api/contact", {
                     method: "POST",

@@ -28,9 +28,9 @@ The catalog grid, filter buttons, the detail modal, and the contact-form `<selec
 - Category ids live in `CAT_IDS`, `AGENT_CAT_IDS`, and `COURSE_CAT_IDS` in the inline script. Each id needs a matching `I18N` key with the prefix `cat_`, `agent_cat_`, or `course_cat_`. A new category needs both.
 - An item's `cat` must be one of those ids, or the item won't appear under any filter or in the form select.
 - Item images are `images/agents/<img>` for agents and `images/products/<img>` for systems. Courses have no image; they render a CSS `course-shot--<cat>` tile.
-- Catalog counts are hardcoded in `I18N` strings: the agent count in `hero_meta2` ("21 готовый агент") and `appeal_p1` ("21 рабочего"), and the course count in `offer_courses_hint` ("16 программ"). Update them in `ru`, `en` and all four `i18n.<lang>.js` files when you add or remove items. No string states the number of systems.
+- Catalog counts are hardcoded in `I18N` strings: the agent count in `hero_meta2` ("22 готовых агента") and `appeal_p1` ("22 рабочих агента"), and the course count in `offer_courses_hint` ("16 программ"). Update them in `ru`, `en` and all four `i18n.<lang>.js` files when you add or remove items. No string states the number of systems.
 
-The page reads like a startup pitch: hero → who we are (`#why`) → the founders' Wikipedia-style appeal (`#appeal`) → press (`#press`, quotes from «Фармацевтический вестник» №10, September 2026) → what we've built (`#catalog` and the sections after it). Section kickers are numbered by hand ("01 · …"), so renumber them when you add or move a section.
+The page reads like a startup pitch: hero (with links to the four platform systems) → platform systems (`#platform`) → plans (`#plans`) → who we are (`#why`) → the founders' Wikipedia-style appeal (`#appeal`) → press (`#press`, quotes from «Фармацевтический вестник» №10, September 2026) → what we've built (`#catalog` and the sections after it). Section kickers are numbered by hand ("01 · …"), so renumber them when you add or move a section.
 
 The language is picked from the `?lang=` URL param, then `localStorage["farmozg-lang"]`, then the browser language if it's one of `LANGS`, else Russian. The switcher is the `#langSelect` dropdown in the nav.
 
@@ -46,6 +46,16 @@ A standalone landing page for the press-tooling system, built from the sales dec
 - Two packages, no prices on the page (removed at the owner's request; quotes go through the form): «Базовый» (software + all-in-one PC + digital microscope, kit value `basic`) and «Стандарт» (Basic + digital indicator, kit value `standard`).
 - `index.html` has a banner above the hero (`.product-banner`, `tb_*` keys in `I18N` and the four language files) presenting it as a separate, non-AI product.
 - Never show the demo server's address (a raw IP) on the page or in a screenshot. The validation screen shows it, so it isn't used.
+
+## Platform system pages: `qms.html`, `ectd.html`, `tasks.html`, `pv.html`
+
+Pages for the working PharmAI systems (QMS, eCTD registration projects, TaskTracker = the app's «Поручения», pharmacovigilance), built from the PharmAI user guide and module docs (`~/PharmAI/docs/modules/`). Screenshots are copied from the app's guide (`PharmAI/frontend/static/guide/img`) into `images/platform/`; `dashboard_work.jpg` is cropped to hide LLM model names and costs.
+
+- `window.PLATFORM` in `i18n.js` lists the systems: page, hero image, `shots`, `agents`, step and source-chip counts. The main page renders the `#platform` cards and the hero links from it.
+- Each HTML file is a stub (`<body data-tool="…">`). `tool-page.js` renders the whole page and `tool-page.css` styles it. The texts live in `tools.i18n.js` (`window.TOOLS_I18N`, all six languages, prefixes `tp_` shared, `qms_`, `ectd_`, `tasks_`, `pvs_`). Lookup is TOOLS_I18N, then I18N.
+- An agent in `agents` is an `AGENTS` id (name from the catalog) or `pv_intake` (built into the PV system). Each needs a `<prefix>_ag_<id>` text describing its role in that system. TaskTracker has no AI of its own; its agents are the ones whose output becomes assignments.
+- Plans: «Individual» (cloud, shared instance, pay-as-you-go by model price, shared validation done by us) and «Enterprise» (on-premise, IQ/OQ/PQ validation package, training, SLA support online or on-site). No prices. The `plan*`/`plans_*` keys are in `I18N` and shared by `index.html#plans` and the system pages. The contact forms add «Формат: …» in Russian.
+- Some AI-first catalog items (`qms`, `edms`, `audit`, `lms`, `ectd`, `rim`, `safety`, `signal`, `pvrpt`) link to these pages through `page`.
 
 ## Product screenshots
 
